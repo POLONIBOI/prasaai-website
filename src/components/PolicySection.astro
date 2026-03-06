@@ -1,0 +1,147 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<section class="policy-section" data-animate>
+  <h2>{title}</h2>
+  <slot />
+</section>
+
+<style>
+  .policy-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    transition: border-color 0.3s;
+  }
+
+  .policy-section:hover {
+    border-color: rgba(136, 153, 170, 0.15);
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .policy-section :global(p) {
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+    line-height: 1.7;
+  }
+
+  .policy-section :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .policy-section :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 14px 0;
+  }
+
+  .policy-section :global(ul:last-child) {
+    margin-bottom: 0;
+  }
+
+  .policy-section :global(li) {
+    color: var(--text-secondary);
+    padding: 6px 0 6px 24px;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .policy-section :global(li::before) {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+    opacity: 0.7;
+  }
+
+  .policy-section :global(strong) {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .policy-section :global(a) {
+    color: var(--amber);
+  }
+
+  .policy-section :global(.disclaimer) {
+    background: var(--amber-subtle);
+    border: 1px solid var(--border-amber);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 14px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+  }
+
+  .policy-section :global(.contact-grid) {
+    display: grid;
+    gap: 12px;
+  }
+
+  .policy-section :global(.contact-item) {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  .policy-section :global(.contact-label) {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    min-width: 60px;
+  }
+
+  .policy-section :global(.contact-value) {
+    color: var(--text-primary);
+    word-break: break-word;
+  }
+
+  .policy-section :global(.highlight) {
+    background: var(--amber-subtle);
+    border: 1px solid var(--amber-border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    color: var(--text-secondary);
+  }
+
+  .policy-section :global(.highlight strong) {
+    color: var(--amber);
+  }
+
+  .policy-section :global(code) {
+    background: rgba(245, 166, 35, 0.12);
+    color: var(--amber);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'DM Sans', monospace;
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .policy-section {
+      padding: 24px 20px;
+      border-radius: 12px;
+    }
+
+    h2 { font-size: 1.125rem; }
+  }
+</style>

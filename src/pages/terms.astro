@@ -1,0 +1,114 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PolicySection from '../components/PolicySection.astro';
+import { site } from '../data/site';
+---
+
+<PageLayout
+  title="Terms of Service — PRASA ai"
+  description="Terms of Service for PRASA ai, the independent WhatsApp assistant for Cape Town Metrorail commuters. Provided by System Sol."
+  canonical={`${site.url}/terms`}
+  subtitle="Effective February 2026"
+>
+
+  <!-- Acceptance -->
+  <PolicySection title="Acceptance of Terms">
+    <p>By sending a message to our WhatsApp number, you agree to these Terms of Service. If you do not agree, please do not use the service.</p>
+    <p>We may update these terms from time to time. Continued use of PRASA ai after changes are posted means you accept the updated terms.</p>
+  </PolicySection>
+
+  <!-- What We Are -->
+  <PolicySection title="What We Are">
+    <p>PRASA ai is an <strong>independent service</strong> built and operated by <strong>System Sol</strong>, a company based in Cape Town.</p>
+    <div class="highlight">
+      <p><strong>Important:</strong> We are <strong>not</strong> affiliated with, endorsed by, or connected to the Passenger Rail Agency of South Africa (PRASA), Metrorail, or any government entity. We are an independent project by commuters, for commuters.</p>
+    </div>
+  </PolicySection>
+
+  <!-- What We Provide -->
+  <PolicySection title="What We Provide">
+    <p>PRASA ai is a WhatsApp-based assistant that helps Cape Town Metrorail commuters with:</p>
+    <ul>
+      <li>Train schedule information</li>
+      <li>Delay alerts and service updates</li>
+      <li>Crowd reports from fellow commuters</li>
+      <li>Fare information</li>
+    </ul>
+    <p>All information is delivered through WhatsApp for your convenience.</p>
+  </PolicySection>
+
+  <!-- Accuracy Disclaimer -->
+  <PolicySection title="Accuracy of Information">
+    <p>Our schedule data is sourced from publicly available GTFS (General Transit Feed Specification) feeds. We do our best to keep information accurate and up to date, but schedules may not always reflect real-time changes, cancellations, or disruptions.</p>
+    <div class="highlight">
+      <p><strong>We cannot guarantee 100% accuracy.</strong> Train services are subject to change without notice by the operators. Always allow extra travel time and check platform announcements where possible.</p>
+    </div>
+  </PolicySection>
+
+  <!-- Crowd Reports -->
+  <PolicySection title="Crowd Reports">
+    <p>Crowd reports are <strong>user-generated</strong> — they come from fellow commuters sharing their experience in real time. We aggregate these reports to give you a general picture of how busy trains and stations are.</p>
+    <p>However, we do not independently verify individual reports. Crowd conditions can change quickly, and reports may not always be accurate or current. Use them as a helpful guide, not a guarantee.</p>
+  </PolicySection>
+
+  <!-- No Liability -->
+  <PolicySection title="Limitation of Liability">
+    <p>PRASA ai and System Sol are <strong>not responsible</strong> for:</p>
+    <ul>
+      <li>Missed trains or connections</li>
+      <li>Incorrect or outdated schedule information</li>
+      <li>Travel decisions you make based on our information</li>
+      <li>Any direct, indirect, or consequential damages arising from your use of the service</li>
+    </ul>
+    <p>You use PRASA ai at your own discretion. We provide information to help, but the final decision on your travel plans is always yours.</p>
+  </PolicySection>
+
+  <!-- Availability -->
+  <PolicySection title="Service Availability">
+    <p>PRASA ai is provided on an <strong>"as is"</strong> basis. We aim to keep the service running smoothly, but we cannot guarantee uninterrupted availability.</p>
+    <p>We reserve the right to modify, suspend, or discontinue the service (or any part of it) at any time, with or without notice. We will do our best to communicate any major changes in advance.</p>
+  </PolicySection>
+
+  <!-- Age Requirement -->
+  <PolicySection title="Age Requirement">
+    <p>You must be at least <strong>13 years old</strong> to use PRASA ai. If you are under 13, please do not send messages to our WhatsApp number.</p>
+  </PolicySection>
+
+  <!-- User Conduct -->
+  <PolicySection title="User Conduct">
+    <p>When using PRASA ai, you agree not to:</p>
+    <ul>
+      <li>Abuse, spam, or misuse the service in any way</li>
+      <li>Submit false or misleading crowd reports</li>
+      <li>Attempt to overwhelm, disrupt, or interfere with the system</li>
+      <li>Use the service for any unlawful purpose</li>
+    </ul>
+    <p>We reserve the right to block or restrict access to users who violate these rules.</p>
+  </PolicySection>
+
+  <!-- Data & Privacy -->
+  <PolicySection title="Your Data">
+    <p>We take your privacy seriously. For full details on what data we collect, how we use it, and how we protect it, please read our <a href="/privacy">Privacy Policy</a>.</p>
+  </PolicySection>
+
+  <!-- Deletion -->
+  <PolicySection title="Deleting Your Data">
+    <p>You can delete your data at any time. Simply send the message <code>delete my data</code> to our WhatsApp number, and we will remove your information from our systems.</p>
+  </PolicySection>
+
+  <!-- Governing Law -->
+  <PolicySection title="Governing Law & Jurisdiction">
+    <p>These terms are governed by the laws of the <strong>Republic of South Africa</strong>.</p>
+    <p>Any disputes arising from these terms or your use of PRASA ai will be subject to the exclusive jurisdiction of the <strong>Western Cape High Court, Cape Town</strong>.</p>
+  </PolicySection>
+
+  <!-- Contact -->
+  <PolicySection title="Contact Us">
+    <p>If you have questions about these terms, reach out to us:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:info@prasaai.co.za">info@prasaai.co.za</a></li>
+      <li><strong>Phone:</strong> <a href="tel:+27760546767">+27 76 054 6767</a></li>
+    </ul>
+  </PolicySection>
+
+</PageLayout>

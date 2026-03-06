@@ -1,0 +1,117 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Brand */
+  --amber: #FFC040;
+  --amber-hover: #FFB020;
+  --amber-glow: rgba(255, 192, 64, 0.4);
+  --amber-subtle: rgba(255, 192, 64, 0.12);
+  --amber-border: rgba(255, 192, 64, 0.28);
+
+  /* Backgrounds */
+  --bg-primary: #111820;
+  --bg-card: #1D2B3A;
+  --bg-card-hover: #243448;
+  --bg-elevated: #2A3A50;
+  --bg-nav: rgba(17, 24, 32, 0.92);
+
+  /* Text */
+  --text-primary: #F0F4F8;
+  --text-secondary: #97AAC0;
+  --text-muted: rgba(151, 170, 192, 0.6);
+
+  /* Borders */
+  --border-subtle: rgba(151, 170, 192, 0.14);
+  --border-amber: rgba(255, 192, 64, 0.3);
+
+  /* Metrorail Lines */
+  --line-red: #FF4444;
+  --line-green: #38B54A;
+  --line-orange: #FF9A30;
+  --line-blue: #5E9BFF;
+
+  /* WhatsApp */
+  --wa-green: #25D366;
+  --wa-dark: #0B141A;
+  --wa-bubble-user: #005C4B;
+  --wa-bubble-bot: #1F2C34;
+
+  /* Gradients */
+  --gradient-hero: radial-gradient(ellipse at 50% 0%, rgba(255,192,64,0.12) 0%, transparent 70%);
+  --gradient-card-glow: radial-gradient(circle at 50% 0%, rgba(255,192,64,0.06) 0%, transparent 60%);
+
+  /* Shadows */
+  --shadow-cta: 0 6px 32px rgba(255, 192, 64, 0.4);
+  --shadow-cta-hover: 0 8px 40px rgba(255, 192, 64, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--amber);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--amber-hover);
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 640px) {
+  .container { padding: 0 24px; }
+}
+
+@media (min-width: 1200px) {
+  .container { padding: 0 32px; }
+}
+
+/* Gradient section divider — metrorail line colors */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-red), var(--line-green), var(--line-orange), var(--line-blue), transparent);
+  opacity: 0.3;
+}
+
+/* Touch targets — ensure 44px minimum on mobile */
+@media (max-width: 768px) {
+  a, button, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .nav-links a {
+    min-height: auto;
+    min-width: auto;
+  }
+}

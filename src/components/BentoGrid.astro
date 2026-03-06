@@ -1,0 +1,40 @@
+---
+---
+
+<div class="bento-grid">
+  <slot />
+</div>
+
+<style>
+  .bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  @media (min-width: 640px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .bento-grid :global(.span-wide) {
+      grid-column: span 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .bento-grid :global(.span-tall) {
+      grid-row: span 2;
+    }
+
+    .bento-grid :global(.span-wide) {
+      grid-column: span 2;
+    }
+  }
+</style>

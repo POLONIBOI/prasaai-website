@@ -1,0 +1,183 @@
+/* Scroll-triggered animation classes */
+@media (prefers-reduced-motion: no-preference) {
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  [data-animate="scale-in"] {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  [data-animate="fade-down"] {
+    opacity: 0;
+    transform: translateY(-16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Stagger delays */
+  [data-delay="1"] { transition-delay: 0.1s; }
+  [data-delay="2"] { transition-delay: 0.2s; }
+  [data-delay="3"] { transition-delay: 0.3s; }
+  [data-delay="4"] { transition-delay: 0.4s; }
+  [data-delay="5"] { transition-delay: 0.5s; }
+
+  /* Hero line bar animation — more dramatic */
+  .hero-line {
+    width: 0;
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .hero-line.is-visible {
+    width: 56px;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-line.is-visible {
+      width: 72px;
+    }
+  }
+
+  /* Invitation glow pulse — boosted */
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 192, 64, 0); }
+    50% { box-shadow: 0 0 50px 10px rgba(255, 192, 64, 0.12); }
+  }
+
+  .invitation-card.is-visible {
+    animation: glow-pulse 4s ease-in-out infinite;
+  }
+
+  /* Text shimmer animation */
+  @keyframes text-shimmer {
+    0% { background-position: 200% 50%; }
+    100% { background-position: -200% 50%; }
+  }
+
+  /* CTA pulse ring */
+  @keyframes cta-pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+
+  /* Floating particles */
+  @keyframes float-particle-1 {
+    0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+    50% { transform: translate(20px, -30px); opacity: 0.5; }
+  }
+  @keyframes float-particle-2 {
+    0%, 100% { transform: translate(0, 0); opacity: 0.15; }
+    50% { transform: translate(-15px, -25px); opacity: 0.4; }
+  }
+  @keyframes float-particle-3 {
+    0%, 100% { transform: translate(0, 0); opacity: 0.1; }
+    50% { transform: translate(25px, 20px); opacity: 0.35; }
+  }
+  @keyframes float-particle-4 {
+    0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+    50% { transform: translate(-20px, 15px); opacity: 0.45; }
+  }
+  @keyframes float-particle-5 {
+    0%, 100% { transform: translate(0, 0); opacity: 0.15; }
+    50% { transform: translate(10px, -20px); opacity: 0.3; }
+  }
+  @keyframes float-particle-6 {
+    0%, 100% { transform: translate(0, 0); opacity: 0.1; }
+    50% { transform: translate(-25px, -10px); opacity: 0.35; }
+  }
+
+  /* Train dot connector */
+  @keyframes train-dot-move {
+    0%, 100% { offset-distance: 0%; }
+    50% { offset-distance: 100%; }
+  }
+
+  /* Chat message reveal */
+  .wa-msg[data-chat-animate] {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .wa-msg[data-chat-animate].chat-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Typing indicator */
+  @keyframes typing-bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+  }
+}
+
+/* No-motion fallback: everything visible */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hero-line {
+    width: 56px !important;
+  }
+
+  /* Text shimmer — solid amber */
+  .hero h1 em {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: var(--amber) !important;
+    animation: none !important;
+  }
+
+  /* CTA pulse — hidden */
+  .cta-primary::after,
+  .cta-secondary::after {
+    display: none !important;
+  }
+
+  /* Particles — hidden */
+  .particle {
+    display: none !important;
+  }
+
+  /* Train dot connector — hidden */
+  .step-connector-dot {
+    display: none !important;
+  }
+
+  /* Chat messages — immediately visible */
+  .wa-msg[data-chat-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Typing indicator — hidden */
+  .typing-indicator {
+    display: none !important;
+  }
+
+  /* Stat counters — show final number immediately (handled in JS too) */
+  [data-count] {
+    opacity: 1 !important;
+  }
+
+  /* Invitation glow — no animation */
+  .invitation-card {
+    animation: none !important;
+  }
+}

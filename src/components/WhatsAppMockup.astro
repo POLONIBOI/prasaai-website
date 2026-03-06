@@ -1,0 +1,155 @@
+---
+---
+
+<div class="wa-mockup" data-animate="scale-in" data-animate-chat>
+  <div class="wa-header">
+    <div class="wa-avatar">P</div>
+    <div>
+      <div class="wa-name">PRASA ai</div>
+      <div class="wa-status">online</div>
+    </div>
+  </div>
+  <div class="wa-chat">
+    <div class="wa-msg wa-msg-user" data-chat-animate>
+      muizi to town
+      <div class="wa-msg-time">06:45</div>
+    </div>
+    <div class="typing-indicator" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="wa-msg wa-msg-bot" data-chat-animate>
+      <span class="msg-line">&#x1F686; Muizenberg &#x2192; Cape Town</span>
+      <span class="msg-line">&#x2705; Southern Line on time</span>
+      <span class="msg-line">&nbsp;</span>
+      <span class="msg-line">&#x25B8; 07:12 &#x2192; 07:48</span>
+      <span class="msg-line">&#x25B8; 07:35 &#x2192; 08:11</span>
+      <span class="msg-line">&nbsp;</span>
+      <span class="msg-line">&#x1F4B0; Single R12</span>
+      <span class="msg-line">&nbsp;</span>
+      <span class="msg-line">&#x1F465; 3 commuters report on time at Muizenberg</span>
+      <div class="wa-msg-time">06:45</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .wa-mockup {
+    max-width: 400px;
+    margin: 0 auto 40px;
+    background: var(--wa-dark);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(151, 170, 192, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .wa-header {
+    background: #1F2C34;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .wa-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--bg-primary);
+  }
+
+  .wa-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .wa-status {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  .wa-chat {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 120px;
+  }
+
+  .wa-msg {
+    max-width: 82%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .wa-msg-user {
+    align-self: flex-end;
+    background: var(--wa-bubble-user);
+    border-bottom-right-radius: 2px;
+    color: #F0F4F8;
+  }
+
+  .wa-msg-bot {
+    align-self: flex-start;
+    background: var(--wa-bubble-bot);
+    border-bottom-left-radius: 2px;
+    color: #F0F4F8;
+  }
+
+  .wa-msg-time {
+    font-size: 0.65rem;
+    color: rgba(240, 244, 248, 0.45);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  .msg-line {
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* Typing indicator */
+  .typing-indicator {
+    align-self: flex-start;
+    background: var(--wa-bubble-bot);
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: none;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .typing-indicator.is-active {
+    display: flex;
+  }
+
+  .typing-indicator span {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    opacity: 0.6;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .typing-indicator span:nth-child(1) { animation: typing-bounce 1.2s 0s infinite; }
+    .typing-indicator span:nth-child(2) { animation: typing-bounce 1.2s 0.15s infinite; }
+    .typing-indicator span:nth-child(3) { animation: typing-bounce 1.2s 0.3s infinite; }
+
+    @keyframes typing-bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-4px); }
+    }
+  }
+</style>

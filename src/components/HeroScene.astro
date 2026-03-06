@@ -1,0 +1,210 @@
+---
+---
+
+<div class="hero-scene" aria-hidden="true">
+  <svg class="rail-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Ambient glow -->
+      <radialGradient id="center-glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#FFC040" stop-opacity="0.15"/>
+        <stop offset="50%" stop-color="#FFC040" stop-opacity="0.03"/>
+        <stop offset="100%" stop-color="#FFC040" stop-opacity="0"/>
+      </radialGradient>
+
+      <!-- Line gradients -->
+      <linearGradient id="grad-red" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#FF4444" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#FF4444" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#38B54A" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#38B54A" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="grad-orange" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#FF9A30" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#FF9A30" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#5E9BFF" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#5E9BFF" stop-opacity="0"/>
+      </linearGradient>
+
+      <!-- Station node glow filter -->
+      <filter id="node-glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+
+      <filter id="center-blur" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="8" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Background glow -->
+    <circle cx="200" cy="200" r="180" fill="url(#center-glow)"/>
+
+    <!-- Orbital rings (subtle) -->
+    <circle cx="200" cy="200" r="80" fill="none" stroke="#97AAC0" stroke-width="0.3" stroke-dasharray="4 8" class="orbit o1" opacity="0.15"/>
+    <circle cx="200" cy="200" r="130" fill="none" stroke="#97AAC0" stroke-width="0.3" stroke-dasharray="4 12" class="orbit o2" opacity="0.1"/>
+
+    <!-- Southern Line (Red) -->
+    <line x1="200" y1="200" x2="90" y2="100" stroke="#FF4444" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+    <line x1="90" y1="100" x2="55" y2="60" stroke="#FF4444" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
+    <circle cx="145" cy="150" r="3" fill="#FF4444" opacity="0.7" filter="url(#node-glow)"/>
+    <circle cx="90" cy="100" r="4" fill="#FF4444" opacity="0.8" filter="url(#node-glow)"/>
+    <circle r="2.5" fill="#FF4444" opacity="0.9" class="train-particle">
+      <animateMotion dur="4s" repeatCount="indefinite" path="M200,200 L90,100 L55,60" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1"/>
+      <animate attributeName="opacity" values="0.3;0.9;0.3" dur="4s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Northern Line (Green) -->
+    <line x1="200" y1="200" x2="310" y2="100" stroke="#38B54A" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+    <line x1="310" y1="100" x2="355" y2="65" stroke="#38B54A" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
+    <circle cx="255" cy="150" r="3" fill="#38B54A" opacity="0.7" filter="url(#node-glow)"/>
+    <circle cx="310" cy="100" r="4" fill="#38B54A" opacity="0.8" filter="url(#node-glow)"/>
+    <circle r="2.5" fill="#38B54A" opacity="0.9" class="train-particle">
+      <animateMotion dur="5s" repeatCount="indefinite" path="M200,200 L310,100 L355,65" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1"/>
+      <animate attributeName="opacity" values="0.3;0.9;0.3" dur="5s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Cape Flats Line (Orange) -->
+    <line x1="200" y1="200" x2="320" y2="300" stroke="#FF9A30" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+    <line x1="320" y1="300" x2="355" y2="335" stroke="#FF9A30" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
+    <line x1="280" y1="260" x2="340" y2="260" stroke="#FF9A30" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
+    <circle cx="260" cy="250" r="3" fill="#FF9A30" opacity="0.7" filter="url(#node-glow)"/>
+    <circle cx="320" cy="300" r="4" fill="#FF9A30" opacity="0.8" filter="url(#node-glow)"/>
+    <circle cx="340" cy="260" r="3" fill="#FF9A30" opacity="0.6" filter="url(#node-glow)"/>
+    <circle r="2.5" fill="#FF9A30" opacity="0.9" class="train-particle">
+      <animateMotion dur="4.5s" repeatCount="indefinite" path="M200,200 L320,300 L355,335" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1"/>
+      <animate attributeName="opacity" values="0.3;0.9;0.3" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Central Line (Blue) -->
+    <line x1="200" y1="200" x2="85" y2="300" stroke="#5E9BFF" stroke-width="2.5" opacity="0.5" stroke-linecap="round"/>
+    <line x1="85" y1="300" x2="55" y2="340" stroke="#5E9BFF" stroke-width="1.5" opacity="0.3" stroke-linecap="round"/>
+    <circle cx="140" cy="250" r="3" fill="#5E9BFF" opacity="0.7" filter="url(#node-glow)"/>
+    <circle cx="85" cy="300" r="4" fill="#5E9BFF" opacity="0.8" filter="url(#node-glow)"/>
+    <circle r="2.5" fill="#5E9BFF" opacity="0.9" class="train-particle">
+      <animateMotion dur="5.5s" repeatCount="indefinite" path="M200,200 L85,300 L55,340" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1"/>
+      <animate attributeName="opacity" values="0.3;0.9;0.3" dur="5.5s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Central hub node (Cape Town Station) -->
+    <circle cx="200" cy="200" r="10" fill="#FFC040" opacity="0.15" filter="url(#center-blur)" class="hub-pulse"/>
+    <circle cx="200" cy="200" r="6" fill="#FFC040" filter="url(#center-blur)"/>
+    <circle cx="200" cy="200" r="3.5" fill="#111820"/>
+    <circle cx="200" cy="200" r="2" fill="#FFC040"/>
+
+    <!-- Ambient floating particles -->
+    <circle r="1.5" fill="#FFC040" opacity="0.3" class="ambient-particle ap1"/>
+    <circle r="1" fill="#FFC040" opacity="0.2" class="ambient-particle ap2"/>
+    <circle r="1.5" fill="#97AAC0" opacity="0.15" class="ambient-particle ap3"/>
+    <circle r="1" fill="#FFC040" opacity="0.25" class="ambient-particle ap4"/>
+    <circle r="1.2" fill="#97AAC0" opacity="0.15" class="ambient-particle ap5"/>
+  </svg>
+</div>
+
+<style>
+  .hero-scene {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .rail-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Reduced motion: disable all SVG animations */
+  @media (prefers-reduced-motion: reduce) {
+    .rail-svg * {
+      animation: none !important;
+    }
+    .rail-svg animateMotion,
+    .rail-svg animate {
+      display: none;
+    }
+    .train-particle { display: none; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .orbit.o1 {
+      animation: orbit-spin 60s linear infinite;
+      transform-origin: 200px 200px;
+    }
+
+    .orbit.o2 {
+      animation: orbit-spin 90s linear infinite reverse;
+      transform-origin: 200px 200px;
+    }
+
+    @keyframes orbit-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hub-pulse {
+      animation: hub-breathe 3s ease-in-out infinite;
+      transform-origin: 200px 200px;
+    }
+
+    @keyframes hub-breathe {
+      0%, 100% { r: 10; opacity: 0.1; }
+      50% { r: 18; opacity: 0.2; }
+    }
+
+    .ap1 {
+      animation: drift1 12s ease-in-out infinite;
+    }
+    .ap2 {
+      animation: drift2 15s ease-in-out infinite;
+    }
+    .ap3 {
+      animation: drift3 18s ease-in-out infinite;
+    }
+    .ap4 {
+      animation: drift4 14s ease-in-out infinite;
+    }
+    .ap5 {
+      animation: drift5 16s ease-in-out infinite;
+    }
+
+    @keyframes drift1 {
+      0%, 100% { transform: translate(160px, 120px); opacity: 0.1; }
+      50% { transform: translate(120px, 80px); opacity: 0.4; }
+    }
+    @keyframes drift2 {
+      0%, 100% { transform: translate(280px, 160px); opacity: 0.1; }
+      50% { transform: translate(300px, 130px); opacity: 0.3; }
+    }
+    @keyframes drift3 {
+      0%, 100% { transform: translate(100px, 280px); opacity: 0.05; }
+      50% { transform: translate(80px, 320px); opacity: 0.2; }
+    }
+    @keyframes drift4 {
+      0%, 100% { transform: translate(250px, 320px); opacity: 0.1; }
+      50% { transform: translate(280px, 280px); opacity: 0.35; }
+    }
+    @keyframes drift5 {
+      0%, 100% { transform: translate(320px, 200px); opacity: 0.05; }
+      50% { transform: translate(340px, 180px); opacity: 0.2; }
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .hero-scene {
+      max-width: 220px;
+      margin-top: 24px;
+    }
+  }
+</style>

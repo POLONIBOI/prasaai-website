@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import TeamMember from '../components/TeamMember.astro';
+import WhatsAppCTA from '../components/WhatsAppCTA.astro';
+import { site } from '../data/site';
+import { team } from '../data/team';
+---
+
+<BaseLayout
+  title="About — PRASA ai"
+  description="The people behind PRASA ai. Learn about our mission to bring world-class passenger information to Cape Town Metrorail commuters."
+  canonical={`${site.url}/about`}
+>
+  <main>
+    <!-- Hero -->
+    <section class="about-hero">
+      <div class="container">
+        <h1 data-animate>The people behind <em>PRASA ai</em></h1>
+        <p class="about-sub" data-animate data-delay="1">Built by commuters, for commuters — on a mission to prove that better passenger information isn't just possible, it's overdue.</p>
+      </div>
+    </section>
+
+    <!-- Our Story -->
+    <div class="section-divider"></div>
+    <section class="about-section section-story">
+      <div class="container">
+        <div class="prose">
+          <SectionHeading>Our story</SectionHeading>
+          <p data-animate>PRASA ai started on a train platform in Cape Town — not in a boardroom, but at 6:47am with no train in sight. That frustration is something over 150,000 daily Metrorail commuters know well. We noticed commuters had already built their own solution: informal WhatsApp groups sharing train sightings and delays in real time.</p>
+          <p data-animate data-delay="1">So we formalised it. PRASA ai is a WhatsApp-based assistant that knows the full Metrorail timetable, checks for disruptions in real-time, speaks English, Afrikaans, and isiXhosa, and understands when you type "muizi to town." No app to download — just a WhatsApp message away.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <div class="section-divider"></div>
+    <section class="about-section section-team">
+      <div class="container">
+        <SectionHeading centered>The team</SectionHeading>
+        <div class="team-grid">
+          {team.map((member) => (
+            <TeamMember
+              name={member.name}
+              role={member.role}
+              bio={member.bio}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Vision -->
+    <div class="section-divider"></div>
+    <section class="about-section section-vision">
+      <div class="container">
+        <div class="prose">
+          <SectionHeading>The vision</SectionHeading>
+          <p data-animate>We believe South Africa's public transport deserves world-class passenger information. The trains are getting better — the X'Trapolis Mega fleet, the Rail Business Plan, the renewed investment. Our vision is to be the information layer that keeps pace.</p>
+          <p data-animate data-delay="1">Right now, PRASA ai is an independent project. We'd love to partner with PRASA, Metrorail, or the City of Cape Town and scale this to every commuter on the network. Until then, we'll keep building.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    padding: 120px 0 60px;
+    text-align: center;
+    background: var(--gradient-hero);
+  }
+
+  .about-hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+
+  .about-hero em {
+    font-style: normal;
+    color: var(--amber);
+  }
+
+  .about-sub {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .about-section {
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Section background gradients */
+  .section-story::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 0% 0%, rgba(255, 154, 48, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .section-team::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(94, 155, 255, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .section-vision::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 100% 100%, rgba(56, 181, 74, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .prose {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .prose p {
+    margin-bottom: 24px;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 640px) {
+    .about-hero { padding: 100px 0 48px; }
+    .about-section { padding: 48px 0; }
+  }
+</style>

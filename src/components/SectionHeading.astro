@@ -1,0 +1,22 @@
+---
+interface Props {
+  centered?: boolean;
+}
+
+const { centered = false } = Astro.props;
+---
+
+<h2 class:list={['section-heading', { centered }]} data-animate>
+  <slot />
+</h2>
+
+<style>
+  .section-heading {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 700;
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+
+  .centered { text-align: center; }
+</style>

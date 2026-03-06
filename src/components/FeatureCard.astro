@@ -1,0 +1,92 @@
+---
+interface Props {
+  emoji: string;
+  icon?: string;
+  title: string;
+  description: string;
+  span?: 'wide' | 'tall';
+  delay?: number;
+}
+
+const { emoji, icon, title, description, span, delay = 0 } = Astro.props;
+---
+
+<div
+  class:list={['feature-card', span && `span-${span}`]}
+  data-animate
+  data-delay={delay}
+>
+  {icon ? (
+    <div class="feature-icon" set:html={icon} />
+  ) : (
+    <span class="feature-emoji">{emoji}</span>
+  )}
+  <h3>{title}</h3>
+  <p>{description}</p>
+  <div class="card-glow"></div>
+</div>
+
+<style>
+  .feature-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 28px 24px;
+    border: 1px solid var(--border-subtle);
+    transition: border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card:hover {
+    border-color: var(--border-amber);
+    background: var(--bg-card-hover);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(255, 192, 64, 0.12);
+  }
+
+  .card-glow {
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-card-glow);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .feature-card:hover .card-glow {
+    opacity: 1;
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--amber);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-icon :global(svg) {
+    width: 48px;
+    height: 48px;
+  }
+
+  .feature-emoji {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+</style>
