@@ -23,7 +23,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote: 'My wife and I both use it. We actually catch earlier trains now because we know exactly what\'s running.',
-    name: 'Tashreew K.',
+    name: 'Tashreeq Karriem',
     line: 'Cape Flats Line',
   },
   {
