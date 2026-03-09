@@ -50,6 +50,41 @@ import { team } from '../data/team';
       </div>
     </section>
 
+    <!-- Traction Stats -->
+    <!-- PLACEHOLDER: Update these numbers with real data -->
+    <div class="section-divider"></div>
+    <section class="about-section section-traction">
+      <div class="container">
+        <SectionHeading centered>By the numbers</SectionHeading>
+        <div class="traction-grid">
+          <div class="traction-card" data-animate data-delay="1">
+            <span class="traction-number" data-count="101">0</span>
+            <span class="traction-label">Stations Covered</span>
+          </div>
+          <div class="traction-card" data-animate data-delay="2">
+            <span class="traction-number" data-count="19">0</span>
+            <span class="traction-label">Routes</span>
+          </div>
+          <div class="traction-card" data-animate data-delay="3">
+            <span class="traction-number" data-count="556">0</span>
+            <span class="traction-label">Daily Trips in Timetable</span>
+          </div>
+          <div class="traction-card" data-animate data-delay="4">
+            <span class="traction-number" data-count="3">0</span>
+            <span class="traction-label">Languages Supported</span>
+          </div>
+          <div class="traction-card" data-animate data-delay="5">
+            <span class="traction-number" data-count="5" data-suffix="s">0</span>
+            <span class="traction-label">Avg Response Time</span>
+          </div>
+          <div class="traction-card" data-animate data-delay="1">
+            <span class="traction-number" data-count="99" data-suffix="%">0</span>
+            <span class="traction-label">Uptime</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Vision -->
     <div class="section-divider"></div>
     <section class="about-section section-vision">
@@ -141,6 +176,60 @@ import { team } from '../data/team';
     gap: 24px;
     max-width: 720px;
     margin: 0 auto;
+  }
+
+  /* Traction stats */
+  .section-traction::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(255, 192, 64, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .traction-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .traction-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 28px 20px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .traction-card:hover {
+    border-color: var(--amber-border);
+    transform: translateY(-2px);
+  }
+
+  .traction-number {
+    display: block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 2.25rem;
+    color: var(--amber);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  .traction-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  @media (min-width: 640px) {
+    .traction-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
   @media (max-width: 640px) {

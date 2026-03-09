@@ -62,30 +62,31 @@ if (!prefersReducedMotion) {
         if (entry.isIntersecting) {
           const container = entry.target as HTMLElement;
           const messages = container.querySelectorAll('[data-chat-animate]');
-          const typing = container.querySelector('.typing-indicator');
+          const typing = container.querySelector('.typing-indicator') || container.querySelector('.typing-indicator-mini');
 
-          // Step 1: Show typing indicator (300ms)
-          setTimeout(() => {
-            if (typing) typing.classList.add('is-active');
-          }, 300);
+          let delay = 300;
+          const steps: Array<() => void> = [];
 
-          // Step 2: Hide typing, show user message (700ms)
-          setTimeout(() => {
-            if (typing) typing.classList.remove('is-active');
-            if (messages[0]) messages[0].classList.add('chat-visible');
-          }, 700);
+          // Build animation steps dynamically for any number of messages
+          messages.forEach((msg, i) => {
+            const showTyping = delay;
+            const showMsg = delay + 400;
 
-          // Step 3: Show typing again (1100ms)
-          setTimeout(() => {
-            if (typing) typing.classList.add('is-active');
-          }, 1100);
+            steps.push(() => {
+              setTimeout(() => {
+                if (typing) typing.classList.add('is-active');
+              }, showTyping);
 
-          // Step 4: Hide typing, show bot message (1600ms)
-          setTimeout(() => {
-            if (typing) typing.classList.remove('is-active');
-            if (messages[1]) messages[1].classList.add('chat-visible');
-          }, 1600);
+              setTimeout(() => {
+                if (typing) typing.classList.remove('is-active');
+                msg.classList.add('chat-visible');
+              }, showMsg);
+            });
 
+            delay = showMsg + 200;
+          });
+
+          steps.forEach((step) => step());
           chatObserver.unobserve(container);
         }
       });

@@ -1,0 +1,85 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+  delay?: number;
+}
+
+const { question, answer, delay } = Astro.props;
+---
+
+<details class="faq-item" data-animate data-delay={delay}>
+  <summary class="faq-question">
+    <span>{question}</span>
+    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 8 10 12 14 8"/>
+    </svg>
+  </summary>
+  <div class="faq-answer">
+    <p>{answer}</p>
+  </div>
+</details>
+
+<style>
+  .faq-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .faq-item[open] {
+    border-color: var(--amber-border);
+    box-shadow: 0 0 30px rgba(255, 192, 64, 0.06);
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+    list-style: none;
+    transition: color 0.2s;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::marker {
+    display: none;
+    content: '';
+  }
+
+  .faq-question:hover {
+    color: var(--amber);
+  }
+
+  .faq-chevron {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    transition: transform 0.3s ease;
+  }
+
+  .faq-item[open] .faq-chevron {
+    transform: rotate(180deg);
+    color: var(--amber);
+  }
+
+  .faq-answer {
+    padding: 0 24px 20px;
+  }
+
+  .faq-answer p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+</style>

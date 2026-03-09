@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import WhatsAppCTA from '../components/WhatsAppCTA.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title="Contact — PRASA ai"
+  description="Get in touch with the PRASA ai team. Reach us on WhatsApp, email, or for partnership inquiries."
+  canonical={`${site.url}/contact`}
+>
+  <main>
+    <section class="contact-hero">
+      <div class="container">
+        <h1 data-animate>Get in <em>touch</em></h1>
+        <p class="contact-sub" data-animate data-delay="1">Whether you're a commuter needing help, a journalist with questions, or a transport authority ready to partner — we'd love to hear from you.</p>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section class="contact-section">
+      <div class="container">
+        <div class="contact-grid">
+
+          <div class="contact-card" data-animate data-delay="1">
+            <span class="contact-icon" aria-hidden="true">&#x1F4AC;</span>
+            <h3>Commuters</h3>
+            <p>The fastest way to get help is to message the bot directly on WhatsApp. Send "help" to see everything PRASA ai can do.</p>
+            <WhatsAppCTA variant="secondary" text="Message on WhatsApp" />
+          </div>
+
+          <div class="contact-card" data-animate data-delay="2">
+            <span class="contact-icon" aria-hidden="true">&#x2709;&#xFE0F;</span>
+            <h3>General inquiries</h3>
+            <p>For questions, feedback, or anything else — drop us an email and we'll get back to you.</p>
+            <a href={`mailto:${site.email}`} class="contact-link">{site.email}</a>
+          </div>
+
+          <div class="contact-card" data-animate data-delay="3">
+            <span class="contact-icon" aria-hidden="true">&#x1F91D;</span>
+            <h3>Partnerships & media</h3>
+            <p>Government, transport authorities, or press — let's talk about how PRASA ai can scale.</p>
+            <a href={`mailto:${site.email}?subject=Partnership%20Inquiry%20—%20PRASA%20ai`} class="contact-link">partnerships@prasaai.co.za</a>
+            <a href="/partner" class="contact-link-secondary">View partnership page &rarr;</a>
+          </div>
+
+          <div class="contact-card" data-animate data-delay="4">
+            <span class="contact-icon" aria-hidden="true">&#x1F4DE;</span>
+            <h3>WhatsApp</h3>
+            <p>You can also reach us directly via WhatsApp for quick questions or support.</p>
+            <a href={`https://wa.me/27760546767`} target="_blank" rel="noopener" class="contact-link">{site.whatsappNumber}</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .contact-hero {
+    padding: 120px 0 60px;
+    text-align: center;
+    background: var(--gradient-hero);
+  }
+
+  .contact-hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+
+  .contact-hero em {
+    font-style: normal;
+    color: var(--amber);
+  }
+
+  .contact-sub {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .contact-section {
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(94, 155, 255, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .contact-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 32px 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .contact-card:hover {
+    border-color: var(--amber-border);
+    transform: translateY(-2px);
+  }
+
+  .contact-icon {
+    font-size: 1.75rem;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .contact-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .contact-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .contact-link {
+    display: inline-block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--amber);
+  }
+
+  .contact-link:hover {
+    color: var(--amber-hover);
+  }
+
+  .contact-link-secondary {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .contact-link-secondary:hover {
+    color: var(--amber);
+  }
+
+  @media (min-width: 640px) {
+    .contact-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .contact-hero { padding: 100px 0 48px; }
+    .contact-section { padding: 48px 0; }
+  }
+</style>

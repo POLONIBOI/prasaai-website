@@ -10,6 +10,8 @@ import HeroScene from '../components/HeroScene.astro';
 import { site } from '../data/site';
 import { features } from '../data/features';
 import { channels } from '../data/channels';
+import { testimonials } from '../data/testimonials';
+import { roadmap } from '../data/roadmap';
 
 const jsonLd = [
   {
@@ -206,6 +208,47 @@ const jsonLd = [
       </div>
     </section>
 
+    <!-- TESTIMONIALS -->
+    <!-- PLACEHOLDER: Replace with real commuter testimonials when available -->
+    <div class="section-divider"></div>
+    <section class="section section-testimonials">
+      <div class="container">
+        <SectionHeading centered>What commuters say</SectionHeading>
+        <div class="testimonials-grid">
+          {testimonials.map((t, i) => (
+            <div class="testimonial-card" data-animate data-delay={(i % 5) + 1}>
+              <svg class="testimonial-quote-icon" width="24" height="24" viewBox="0 0 24 24" fill="var(--amber-subtle)" aria-hidden="true">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11h4v10H0z"/>
+              </svg>
+              <p class="testimonial-text">{t.quote}</p>
+              <div class="testimonial-author">
+                <span class="testimonial-name">{t.name}</span>
+                <span class="testimonial-line">{t.line}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <div class="section-divider"></div>
+    <section class="section section-roadmap">
+      <div class="container">
+        <SectionHeading centered>What's next</SectionHeading>
+        <p class="roadmap-subtitle" data-animate>PRASA ai is actively growing. Here's what we've shipped and what's coming.</p>
+        <div class="roadmap-grid">
+          {roadmap.map((item, i) => (
+            <div class={`roadmap-card roadmap-${item.status}`} data-animate data-delay={(i % 5) + 1}>
+              <span class="roadmap-badge">{item.status === 'shipped' ? 'Shipped' : item.status === 'building' ? 'Building' : 'Planned'}</span>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <!-- OPEN INVITATION -->
     <div class="section-divider"></div>
     <section class="section">
@@ -214,7 +257,10 @@ const jsonLd = [
           <SectionHeading centered>To PRASA: Let's talk.</SectionHeading>
           <p>We built PRASA ai because we believe South Africa's commuters deserve world-class passenger information. We've done the hard work — real-time timetables, AI-powered assistance, crowd-sourced reporting, multilingual support. All on WhatsApp, where your passengers already are.</p>
           <p>This could be so much bigger as an official service. If anyone at PRASA, Metrorail, or the City of Cape Town wants to explore what that looks like — we're ready.</p>
-          <a href={`mailto:${site.email}`} class="btn-outline">Get in touch</a>
+          <div class="invitation-actions">
+            <a href="/partner" class="btn-outline">Learn more</a>
+            <a href={`mailto:${site.email}`} class="btn-outline-secondary">Get in touch</a>
+          </div>
         </div>
       </div>
     </section>
@@ -625,6 +671,190 @@ const jsonLd = [
     .channels-grid {
       grid-template-columns: repeat(3, 1fr);
     }
+  }
+
+  /* TESTIMONIALS */
+  .section-testimonials::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(255, 192, 64, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .testimonial-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .testimonial-card:hover {
+    border-color: var(--amber-border);
+    transform: translateY(-2px);
+  }
+
+  .testimonial-quote-icon {
+    margin-bottom: 12px;
+    opacity: 0.6;
+  }
+
+  .testimonial-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .testimonial-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--amber);
+  }
+
+  .testimonial-line {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .testimonial-line::before {
+    content: '\00B7 ';
+  }
+
+  /* ROADMAP */
+  .section-roadmap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 100% 0%, rgba(94, 155, 255, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .roadmap-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-bottom: 36px;
+  }
+
+  .roadmap-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .roadmap-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+
+  .roadmap-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  .roadmap-shipped .roadmap-badge {
+    background: rgba(56, 181, 74, 0.15);
+    color: var(--line-green);
+  }
+
+  .roadmap-shipped {
+    border-left: 3px solid var(--line-green);
+  }
+
+  .roadmap-building .roadmap-badge {
+    background: rgba(255, 192, 64, 0.15);
+    color: var(--amber);
+  }
+
+  .roadmap-building {
+    border-left: 3px solid var(--amber);
+  }
+
+  .roadmap-planned .roadmap-badge {
+    background: rgba(94, 155, 255, 0.15);
+    color: var(--line-blue);
+  }
+
+  .roadmap-planned {
+    border-left: 3px solid var(--line-blue);
+  }
+
+  .roadmap-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .roadmap-card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+
+  /* INVITATION ACTIONS */
+  .invitation-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-outline-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 12px 28px;
+    border-radius: 50px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-outline-secondary:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  @media (min-width: 640px) {
+    .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+    .roadmap-grid { grid-template-columns: repeat(2, 1fr); }
+    .invitation-actions { flex-direction: row; justify-content: center; }
+  }
+
+  @media (min-width: 768px) {
+    .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
   /* Reduced motion */
