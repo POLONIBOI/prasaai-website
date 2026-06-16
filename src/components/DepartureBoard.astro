@@ -1,0 +1,195 @@
+---
+// Live network status board — the hero centrepiece & #1 trust signal.
+// Static-but-realistic; the "updated Ns ago" ticks via a tiny script.
+interface LineRow {
+  name: string;
+  colorVar: string;
+  status: 'On time' | 'Delays' | 'Suspended';
+  detail: string;
+  next: string;
+}
+
+interface Props {
+  title?: string;
+  compact?: boolean;
+}
+
+const { title = 'Live network', compact = false } = Astro.props;
+
+const lines: LineRow[] = [
+  { name: 'Northern Line', colorVar: '--line-green', status: 'On time', detail: 'Bellville → Cape Town', next: '07:42' },
+  { name: 'Southern Line', colorVar: '--line-red', status: 'On time', detail: 'Simon’s Town → Cape Town', next: '07:38' },
+  { name: 'Central Line', colorVar: '--line-blue', status: 'Delays', detail: '~12 min near Mutual', next: '07:55' },
+  { name: 'Cape Flats Line', colorVar: '--line-orange', status: 'On time', detail: 'Kapteinsklip → Cape Town', next: '07:49' },
+  { name: 'Malmesbury Line', colorVar: '--amber', status: 'On time', detail: 'Wellington → Cape Town', next: '08:10' },
+];
+
+const pillClass = (s: string) => (s === 'On time' ? 'pill-ok' : s === 'Delays' ? 'pill-warn' : 'pill-bad');
+const statusIcon = (s: string) => (s === 'On time' ? '✓' : s === 'Delays' ? '!' : '✕');
+---
+
+<div class:list={['board', compact && 'board--compact']} data-animate="scale-in">
+  <div class="board-top">
+    <div class="board-id">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span class="board-title">PRASA ai · {title}</span>
+    </div>
+    <div class="board-updated">updated <span data-updated-seconds>8</span>s ago</div>
+  </div>
+
+  <div class="board-rows">
+    {lines.map((l, i) => (
+      <div class="board-row" data-animate data-delay={i + 1}>
+        <span class="board-bar" style={`background: var(${l.colorVar})`} aria-hidden="true"></span>
+        <div class="board-line">
+          <span class="board-line-name">{l.name}</span>
+          <span class="board-line-detail">{l.detail}</span>
+        </div>
+        <span class:list={['pill', pillClass(l.status)]}>
+          <span aria-hidden="true">{statusIcon(l.status)}</span> {l.status}
+        </span>
+        <span class="board-next mono">{l.next}</span>
+      </div>
+    ))}
+  </div>
+
+  <div class="board-foot">
+    <span>Live status preview</span>
+    <span class="board-foot-note">Sample data · not a live feed yet</span>
+  </div>
+</div>
+
+<style>
+  .board {
+    width: 100%;
+    background:
+      linear-gradient(180deg, rgba(36, 49, 64, 0.55) 0%, rgba(22, 31, 43, 0.85) 100%),
+      var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .board::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--line-red), var(--line-orange), var(--amber), var(--line-green), var(--line-blue));
+    opacity: 0.9;
+  }
+
+  .board-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .board-id {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .board-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+  }
+
+  .board-updated {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .board-rows {
+    padding: 6px 0;
+  }
+
+  .board-row {
+    display: grid;
+    grid-template-columns: 4px 1fr auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 18px;
+    transition: background 0.2s;
+  }
+
+  .board-row:hover { background: rgba(255, 255, 255, 0.02); }
+
+  .board-bar {
+    width: 4px;
+    height: 30px;
+    border-radius: 2px;
+  }
+
+  .board-line {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .board-line-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+  }
+
+  .board-line-detail {
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .board-next {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--amber);
+    letter-spacing: 0.02em;
+  }
+
+  .board-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+  }
+
+  .board-foot-note {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+  }
+
+  .board--compact .board-line-detail { display: none; }
+
+  @media (max-width: 420px) {
+    .board-line-detail { display: none; }
+    .board-row { gap: 8px; padding: 10px 14px; }
+    .board-top, .board-foot { padding-left: 14px; padding-right: 14px; }
+  }
+</style>
+
+<script>
+  // Tick the "updated Ns ago" counter so the board feels live.
+  const el = document.querySelector('[data-updated-seconds]');
+  if (el) {
+    let s = 8;
+    setInterval(() => {
+      s = s >= 59 ? 4 : s + 1;
+      el.textContent = String(s);
+    }, 1000);
+  }
+</script>

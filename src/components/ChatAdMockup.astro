@@ -1,0 +1,73 @@
+---
+// Clean, self-contained in-chat sponsored-ad mockup. Used on the home advertise
+// teaser and the /advertise hero so they never diverge. No scroll animation on the
+// bubbles themselves (keeps it crisp; nothing to catch mid-transition).
+interface Props {
+  bot: string[];
+  adTitle: string;
+  adBody: string;
+  adCta: string;
+}
+const { bot, adTitle, adBody, adCta } = Astro.props;
+---
+
+<div class="chatad">
+  <div class="chatad-bubble chatad-bot">
+    {bot.map((l) => <span>{l}</span>)}
+  </div>
+  <div class="chatad-bubble chatad-ad">
+    <span class="chatad-tag">Sponsored</span>
+    <span class="chatad-title">{adTitle}</span>
+    <span class="chatad-body">{adBody}</span>
+    <span class="chatad-cta">{adCta} &rarr;</span>
+  </div>
+</div>
+
+<style>
+  .chatad {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    background: var(--wa-dark);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow-2);
+  }
+  .chatad-bubble {
+    align-self: flex-start;
+    max-width: 90%;
+    border-radius: 12px;
+    border-bottom-left-radius: 4px;
+    padding: 10px 13px;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .chatad-bot { background: var(--wa-bubble-bot); color: #EAF2F8; }
+  .chatad-ad { background: rgba(255, 192, 64, 0.07); border: 1px dashed var(--amber-border); }
+  .chatad-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .chatad-title { font-weight: 600; color: #EAF2F8; }
+  .chatad-body { color: #C7D3DE; }
+  .chatad-cta {
+    align-self: flex-start;
+    margin-top: 5px;
+    background: var(--wa-green);
+    color: #072017;
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 5px 13px;
+    border-radius: var(--radius-pill);
+  }
+</style>

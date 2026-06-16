@@ -1,0 +1,385 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ChatAdMockup from '../components/ChatAdMockup.astro';
+import { site } from '../data/site';
+import {
+  audienceTiles, adFormats, hourlyIndex, dayLabels, dayMultiplier,
+  dayparts, buyOptions, buyNotes, process, brandSafety, measurement,
+} from '../data/advertise';
+
+// Build the 7 x 24 dayparting heatmap (0..1 intensity).
+const heat = dayLabels.map((_, d) =>
+  hourlyIndex.map((idx) => Math.min(1, (idx / 100) * dayMultiplier[d]))
+);
+const hourTicks = [0, 3, 6, 9, 12, 15, 18, 21];
+const mailto = `mailto:${site.email}?subject=Advertising%20with%20PRASA%20ai`;
+const bubbleClass = (from: string) => (from === 'user' ? 'ad-user' : from === 'sponsored' ? 'ad-ad' : 'ad-bot');
+---
+
+<BaseLayout
+  title="Advertise with PRASA ai — Reach Cape Town's rail commuters"
+  description="Put your brand in front of Cape Town's daily Metrorail commuters, in the moment they plan their trip. A captive, opt-in WhatsApp audience: ~98% open rate, ~100% viewability, measurable, brand-safe."
+  canonical={`${site.url}/advertise`}
+>
+  <main>
+    <!-- HERO -->
+    <section class="ad-hero">
+      <div class="container-wide">
+        <div class="ad-hero-grid">
+          <div class="ad-hero-text">
+            <span class="eyebrow">Advertise with us</span>
+            <h1>Reach commuters the <em>moment</em> they plan their trip.</h1>
+            <p class="ad-lead">Thousands of Cape Town rail commuters open PRASA ai every morning and evening to ask one thing: “is my train coming?” A single, labelled sponsored line rides along with the answer — in WhatsApp, where they already are.</p>
+            <div class="ad-hero-actions">
+              <a href={mailto} class="btn btn-amber">Get a quote</a>
+              <a href="#how-to-buy" class="btn btn-ghost">See how to buy &darr;</a>
+            </div>
+            <p class="ad-pilot">🚀 Ask about our <strong>launch pilot</strong> — prove it on your budget before you scale.</p>
+          </div>
+          <div class="ad-hero-demo">
+            <ChatAdMockup
+              bot={['🚆 Northern Line — Bellville → Cape Town', '✅ On time · Next 07:42 · Platform 2']}
+              adTitle="☕ Vida e Caffè @ Cape Town Station"
+              adBody="R10 off your morning coffee — show this chat."
+              adCta="Get offer"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUDIENCE TILES -->
+    <section class="ad-section">
+      <div class="container-wide">
+        <div class="sec-head"><span class="eyebrow">The audience</span><h2>A captive, daily, high-intent audience</h2>
+          <p class="sec-sub">Lead figures are PRASA ai’s own inventory; Metrorail ridership is the total addressable market. Audience numbers illustrative — benchmarks sourced.</p>
+        </div>
+        <div class="tiles">
+          {audienceTiles.map((t, i) => (
+            <div class="tile" data-animate data-delay={(i % 4) + 1}>
+              <span class:list={['tile-val', t.mono && 'mono']}>{t.value}</span>
+              <span class="tile-label">{t.label}</span>
+              {t.note && <span class="tile-note">{t.note}</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- WHY IN-CHAT -->
+    <section class="ad-section">
+      <div class="container-wide">
+        <div class="sec-head"><span class="eyebrow">Why in-chat wins</span><h2>Every impression is a seen impression</h2></div>
+        <div class="why-grid">
+          <div class="why-card" data-animate><span class="why-num mono">~100%</span><h3>Viewable</h3><p>One message in the thread — no scroll-past, no banner blindness. Display ads rarely clear 60%.</p></div>
+          <div class="why-card" data-animate data-delay="1"><span class="why-num mono">~98%</span><h3>Opened</h3><p>WhatsApp’s open-rate ceiling dwarfs email’s ~20%. Your message gets read.</p></div>
+          <div class="why-card" data-animate data-delay="2"><span class="why-num mono">High</span><h3>Intent &amp; context</h3><p>They <em>asked</em> about their commute. Your offer lands in a relevant, attentive moment.</p></div>
+          <div class="why-card" data-animate data-delay="3"><span class="why-num mono">Clean</span><h3>Brand-safe</h3><p>Opt-in, POPIA-compliant, encrypted, no risky UGC feed to sit beside.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- AD FORMATS -->
+    <section class="ad-section">
+      <div class="container-wide">
+        <div class="sec-head"><span class="eyebrow">Ad formats</span><h2>Three ways to show up in the chat</h2>
+          <p class="sec-sub">Always labelled “Sponsored”, capped at one per reply, written to read like the conversation.</p>
+        </div>
+        <div class="formats">
+          {adFormats.map((f, i) => (
+            <div class="format" data-animate data-delay={i + 1}>
+              <div class="ad-thread">
+                {f.thread.map((m) => (
+                  <div class:list={[bubbleClass(m.from)]}>
+                    {m.from === 'sponsored' && <span class="ad-label">— Sponsored —</span>}
+                    {m.lines.map((ln, idx) => (
+                      m.from === 'sponsored' && idx === m.lines.length - 1
+                        ? <span class="ad-cta-line">{ln}</span>
+                        : <span>{ln}</span>
+                    ))}
+                    {m.time && <span class="ad-time mono">{m.time}</span>}
+                  </div>
+                ))}
+              </div>
+              <h3 class="format-name">{f.name}</h3>
+              <p class="format-blurb">{f.blurb}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- DAYPARTING HEATMAP -->
+    <section class="ad-section">
+      <div class="container-wide">
+        <div class="sec-head"><span class="eyebrow">Best time to advertise</span><h2>When your audience is live</h2>
+          <p class="sec-sub">Commuter rail is sharply bimodal. Two premium windows — <strong>AM 06:00–09:00</strong> and <strong>PM 16:00–19:00</strong> — when riders are captive and planning their day.</p>
+        </div>
+        <div class="heat-wrap">
+          <div class="heat-scroll">
+            <div class="heat">
+              <div class="heat-corner"></div>
+              {hourlyIndex.map((_, h) => (
+                <div class="heat-hour">{hourTicks.includes(h) ? String(h).padStart(2, '0') : ''}</div>
+              ))}
+              {heat.map((row, d) => (
+                <>
+                  <div class="heat-day">{dayLabels[d]}</div>
+                  {row.map((v, h) => (
+                    <div
+                      class="heat-cell"
+                      style={`background: rgba(255,192,64,${(0.05 + v * 0.9).toFixed(2)})`}
+                      title={`${dayLabels[d]} ${String(h).padStart(2, '0')}:00 — ${Math.round(v * 100)}% of peak`}
+                    ></div>
+                  ))}
+                </>
+              ))}
+            </div>
+          </div>
+          <div class="heat-legend">
+            <span>Quiet</span>
+            <span class="heat-ramp"></span>
+            <span>Peak</span>
+          </div>
+        </div>
+        <div class="daypart-grid">
+          {dayparts.map((d, i) => (
+            <div class="daypart" data-animate data-delay={i + 1}>
+              <div class="daypart-top"><strong>{d.label}</strong><span class:list={['pill', d.tier === 'Peak' ? 'pill-warn' : 'pill-info']}>{d.tier}</span></div>
+              <span class="daypart-window mono">{d.window}</span>
+              <p class="daypart-vert">{d.verticals}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- WAYS TO BUY -->
+    <section class="ad-section" id="how-to-buy">
+      <div class="container-wide">
+        <div class="sec-head"><span class="eyebrow">Ways to buy</span><h2>Pick a placement — we’ll tailor the rest</h2>
+          <p class="sec-sub">Buy by reach, daypart or exclusivity. Because the right mix depends on your goals, we quote every campaign individually — get in touch for pricing.</p>
+        </div>
+        <div class="rate-wrap">
+          <table class="rate-table">
+            <thead>
+              <tr><th>Placement</th><th>Format</th><th>Best daypart</th><th>Good for</th></tr>
+            </thead>
+            <tbody>
+              {buyOptions.map((r) => (
+                <tr>
+                  <td data-label="Placement"><strong>{r.placement}</strong></td>
+                  <td data-label="Format">{r.format}</td>
+                  <td data-label="Best daypart">{r.daypart}</td>
+                  <td data-label="Good for">{r.fit}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <ul class="rate-notes">
+          {buyNotes.map((n) => <li>{n}</li>)}
+        </ul>
+        <div class="quote-cta">
+          <a href={mailto} class="btn btn-amber">Get a tailored quote</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- PROCESS -->
+    <section class="ad-section">
+      <div class="container-wide">
+        <div class="sec-head"><span class="eyebrow">How it works</span><h2>From brief to live in five steps</h2></div>
+        <div class="proc-grid">
+          {process.map((p, i) => (
+            <div class="proc-step" data-animate data-delay={i + 1}>
+              <span class="proc-num mono">{String(p.num).padStart(2, '0')}</span>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- SAFETY + MEASUREMENT -->
+    <section class="ad-section">
+      <div class="container-wide">
+        <div class="grid-2">
+          <div class="panel" data-animate>
+            <span class="eyebrow">Brand safety &amp; POPIA</span>
+            <ul class="check-list">{brandSafety.map((b) => <li>{b}</li>)}</ul>
+          </div>
+          <div class="panel" data-animate data-delay="1">
+            <span class="eyebrow">Measurement &amp; attribution</span>
+            <ul class="check-list">{measurement.map((m) => <li>{m}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="ad-section ad-cta-section">
+      <div class="container-wide">
+        <div class="ad-cta">
+          <h2>Get in front of Cape Town’s commuters.</h2>
+          <p>Tell us your goal, your budget and your daypart — we’ll map it to live inventory and send a plan. Start with a pilot and only scale what works.</p>
+          <div class="ad-cta-actions">
+            <a href={mailto} class="btn btn-amber">Get a quote</a>
+            <a href={site.whatsappUrl} class="btn btn-wa" target="_blank" rel="noopener">Chat on WhatsApp</a>
+          </div>
+          <p class="ad-cta-note">PRASA ai is independent of PRASA/Metrorail. Sponsored content is clearly labelled and never compromises safety-critical information.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .ad-hero { padding: 104px 0 40px; background: var(--gradient-hero); }
+  .ad-hero-grid { display: grid; grid-template-columns: 1fr; gap: 36px; align-items: center; }
+  @media (min-width: 880px) { .ad-hero-grid { grid-template-columns: 1.1fr 0.9fr; gap: 48px; } }
+  .ad-hero-text .eyebrow { margin-bottom: 16px; }
+  .ad-hero h1 { font-size: var(--fs-display); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 18px; }
+  .ad-hero h1 em { font-style: normal; color: var(--amber); }
+  .ad-lead { font-size: var(--fs-lead); color: var(--text-secondary); line-height: 1.55; max-width: 540px; margin-bottom: 26px; }
+  .ad-hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
+  .ad-pilot { font-size: 0.86rem; color: var(--text-secondary); }
+  .ad-pilot strong { color: var(--amber); }
+  .ad-hero-demo { display: flex; justify-content: center; }
+
+  /* Chat threads */
+  .ad-thread {
+    width: 100%; max-width: 380px; background: var(--wa-dark);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+    padding: 14px; display: flex; flex-direction: column; gap: 9px; box-shadow: var(--shadow-2);
+  }
+  .ad-thread--hero { max-width: 400px; }
+  .ad-user, .ad-bot, .ad-ad {
+    border-radius: 10px; padding: 9px 12px; font-size: 0.84rem; line-height: 1.4;
+    display: flex; flex-direction: column; gap: 2px; max-width: 90%; position: relative;
+  }
+  .ad-user { align-self: flex-end; background: var(--wa-bubble-user); border-bottom-right-radius: 2px; color: #F0F4F8; }
+  .ad-bot { align-self: flex-start; background: var(--wa-bubble-bot); border-bottom-left-radius: 2px; color: #F0F4F8; }
+  .ad-ad { align-self: flex-start; background: rgba(255,192,64,0.07); border: 1px dashed var(--amber-border); border-bottom-left-radius: 2px; }
+  .ad-label { font-family: var(--font-mono); font-size: 0.64rem; color: var(--amber); letter-spacing: 0.06em; margin-bottom: 2px; }
+  .ad-cta, .ad-cta-line { color: var(--wa-green); font-weight: 600; }
+  .ad-time { font-size: 0.6rem; color: rgba(240,244,248,0.45); align-self: flex-end; margin-top: 2px; }
+
+  .ad-section { padding: 44px 0; position: relative; overflow: hidden; }
+  .ad-cta-section { padding-bottom: 88px; }
+  .sec-head { margin-bottom: 26px; max-width: 760px; }
+  .sec-head .eyebrow { margin-bottom: 12px; }
+  .sec-head h2 { font-size: var(--fs-h2); font-weight: 700; }
+  .sec-sub { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; margin-top: 10px; }
+  .sec-sub strong { color: var(--amber); }
+
+  /* Tiles */
+  .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (min-width: 680px) { .tiles { grid-template-columns: repeat(4, 1fr); } }
+  .tile { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .tile-val { font-size: 1.6rem; font-weight: 800; color: var(--amber); line-height: 1; font-family: var(--font-display); }
+  .tile-val.mono { font-family: var(--font-mono); font-weight: 700; }
+  .tile-label { font-size: 0.82rem; color: var(--text-primary); font-weight: 600; }
+  .tile-note { font-size: 0.7rem; color: var(--text-muted); }
+
+  /* Why */
+  .why-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 560px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .why-grid { grid-template-columns: repeat(4, 1fr); } }
+  .why-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 22px; }
+  .why-num { font-size: 1.5rem; font-weight: 700; color: var(--amber); display: block; margin-bottom: 8px; }
+  .why-card h3 { font-size: 1rem; margin-bottom: 6px; }
+  .why-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+  .why-card em { color: var(--text-primary); font-style: italic; }
+
+  /* Formats */
+  .formats { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 760px) { .formats { grid-template-columns: repeat(3, 1fr); } }
+  .format { display: flex; flex-direction: column; align-items: center; }
+  .format .ad-thread { margin-bottom: 16px; }
+  .format-name { font-size: 1.05rem; text-align: center; margin-bottom: 6px; }
+  .format-blurb { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; text-align: center; }
+
+  /* Heatmap */
+  .heat-wrap { margin-bottom: 26px; }
+  .heat-scroll { overflow-x: auto; padding-bottom: 6px; }
+  .heat {
+    display: grid;
+    grid-template-columns: 36px repeat(24, minmax(11px, 1fr));
+    gap: 3px;
+    min-width: 340px;
+  }
+  .heat-corner { }
+  .heat-hour { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-muted); text-align: center; }
+  .heat-day { font-size: 0.7rem; color: var(--text-secondary); display: flex; align-items: center; }
+  .heat-cell { aspect-ratio: 1 / 1; border-radius: 3px; }
+  .heat-legend { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 0.72rem; color: var(--text-secondary); }
+  .heat-ramp { width: 120px; height: 10px; border-radius: var(--radius-pill); background: linear-gradient(90deg, rgba(255,192,64,0.08), rgba(255,192,64,0.95)); }
+
+  .daypart-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 560px) { .daypart-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .daypart-grid { grid-template-columns: repeat(4, 1fr); } }
+  .daypart { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: 16px; }
+  .daypart-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .daypart-top strong { font-size: 0.95rem; }
+  .daypart-window { font-size: 0.72rem; color: var(--text-secondary); display: block; margin-bottom: 8px; }
+  .daypart-vert { font-size: 0.78rem; color: var(--text-muted); line-height: 1.45; }
+
+  /* Rate table */
+  .rate-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); }
+  .rate-table { width: 100%; border-collapse: collapse; min-width: 540px; }
+  .rate-table thead th {
+    text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-secondary); padding: 14px 16px; background: var(--bg-elevated); font-weight: 700;
+  }
+  .rate-table td { padding: 14px 16px; border-top: 1px solid var(--border-subtle); font-size: 0.88rem; color: var(--text-secondary); }
+  .rate-table td strong { color: var(--text-primary); font-weight: 600; }
+  .rate-table tbody tr { background: var(--bg-card); transition: background 0.2s; }
+  .rate-table tbody tr:hover { background: var(--bg-card-hover); }
+  .rate-amt { text-align: right; color: var(--amber) !important; font-weight: 600; }
+  .rate-notes { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 6px; }
+  .rate-notes li { font-size: 0.82rem; color: var(--text-secondary); padding-left: 18px; position: relative; }
+  .rate-notes li::before { content: '▸'; position: absolute; left: 0; color: var(--amber); }
+  .quote-cta { margin-top: 24px; }
+
+  /* Process */
+  .proc-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 600px) { .proc-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .proc-grid { grid-template-columns: repeat(5, 1fr); } }
+  .proc-step { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius); border-top: 2px solid var(--amber-border); padding: 18px; }
+  .proc-num { font-size: 1.3rem; font-weight: 700; color: var(--amber); display: block; margin-bottom: 8px; }
+  .proc-step h3 { font-size: 0.95rem; margin-bottom: 6px; }
+  .proc-step p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Safety / measurement */
+  .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 800px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+  .check-list { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .check-list li { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; padding-left: 26px; position: relative; }
+  .check-list li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--status-ok); font-weight: 700; }
+
+  /* CTA */
+  .ad-cta { background: var(--bg-card); border: 1px solid var(--amber-border); border-radius: var(--radius-xl); padding: 44px 32px; text-align: center; box-shadow: var(--shadow-glow); max-width: 760px; margin: 0 auto; }
+  .ad-cta h2 { font-size: var(--fs-h2); font-weight: 700; margin-bottom: 14px; }
+  .ad-cta p { color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65; max-width: 600px; margin: 0 auto 26px; }
+  .ad-cta-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 18px; }
+  .ad-cta-note { font-size: 0.74rem; color: var(--text-muted); font-style: italic; }
+
+  @media (max-width: 600px) {
+    .ad-hero { padding-top: 92px; }
+    .ad-section { padding: 32px 0; }
+  }
+</style>

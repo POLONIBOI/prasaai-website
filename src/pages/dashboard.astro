@@ -1,0 +1,399 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DepartureBoard from '../components/DepartureBoard.astro';
+import KpiCard from '../components/KpiCard.astro';
+import { site } from '../data/site';
+import { ecosystem } from '../data/ecosystem';
+import {
+  kpis, topRoutes, demandByHour, sentimentByLine, topConcerns,
+  infoGaps, otpTrend, otpTarget, recoveryTrend, cancellations, coverage, monthLabels,
+} from '../data/dashboard';
+
+// ---- tiny inline-SVG chart helpers (no libraries) ----
+const W = 720, H = 190, P = 10;
+function coords(values: number[], min: number, max: number) {
+  const range = (max - min) || 1;
+  return values.map((v, i) => {
+    const x = P + (i / (values.length - 1)) * (W - 2 * P);
+    const y = P + (H - 2 * P) - ((v - min) / range) * (H - 2 * P);
+    return [x, y] as [number, number];
+  });
+}
+const toLine = (c: [number, number][]) => c.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+const toArea = (c: [number, number][]) => `${c[0][0].toFixed(1)},${H} ${toLine(c)} ${c[c.length - 1][0].toFixed(1)},${H}`;
+const yFor = (v: number, min: number, max: number) => P + (H - 2 * P) - ((v - min) / ((max - min) || 1)) * (H - 2 * P);
+
+const demandC = coords(demandByHour, 0, 100);
+const otpC = coords(otpTrend, 80, 95);
+const otpTargetY = yFor(otpTarget, 80, 95);
+const recoveryC = coords(recoveryTrend, 0, 100);
+
+const maxRoute = Math.max(...topRoutes.map((r) => r.queries));
+const maxConcern = Math.max(...topConcerns.map((c) => c.pct));
+const maxGap = Math.max(...infoGaps.map((g) => g.queries));
+---
+
+<BaseLayout
+  title="Public Dashboard — PRASA ai"
+  description="A live, passenger-sourced view of Cape Town Metrorail: demand, sentiment, on-time performance and where riders feel left in the dark. Built from every question commuters ask PRASA ai."
+  canonical={`${site.url}/dashboard`}
+>
+  <main>
+    <!-- HERO -->
+    <section class="dash-hero">
+      <div class="container-wide">
+        <span class="eyebrow"><span class="live-dot" aria-hidden="true"></span> Public dashboard · updated live</span>
+        <h1>How Cape Town commutes — <em>in real time.</em></h1>
+        <p class="dash-lead">Every question a commuter asks is a signal. PRASA ai turns millions of WhatsApp messages into a live view of the network the way passengers actually experience it — demand, sentiment, and the exact places riders feel left in the dark.</p>
+        <p class="dash-note">Figures below are illustrative, sized to a Cape Town Metrorail-scale service. Connect live analytics to make them real.</p>
+        <div class="dash-board"><DepartureBoard /></div>
+      </div>
+    </section>
+
+    <!-- HEADLINE KPIs -->
+    <section class="dash-section">
+      <div class="container-wide">
+        <div class="sec-head"><span class="eyebrow">The headlines</span><h2>This month at a glance</h2></div>
+        <div class="kpi-row">
+          {kpis.map((k, i) => <KpiCard kpi={k} delay={i + 1} />)}
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- DEMAND INTELLIGENCE -->
+    <section class="dash-section">
+      <div class="container-wide">
+        <div class="sec-head">
+          <span class="eyebrow">Demand intelligence</span>
+          <h2>Where people want to go</h2>
+          <p class="sec-sub">Origin–destination demand straight from “how do I get from X to Y” — the data operators normally pay for in one-off smart-card studies.</p>
+        </div>
+        <div class="grid-2">
+          <div class="panel" data-animate>
+            <h3 class="panel-title">Most-requested routes <span class="panel-cap">queries this week</span></h3>
+            <div class="bars">
+              {topRoutes.map((r) => (
+                <div class="bar-row">
+                  <span class="bar-label">{r.route}</span>
+                  <span class="bar-track"><span class="bar-fill" style={`width:${(r.queries / maxRoute) * 100}%; background: var(${r.colorVar})`}></span></span>
+                  <span class="bar-val mono">{r.queries.toLocaleString()}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div class="panel" data-animate data-delay="1">
+            <h3 class="panel-title">Demand by time of day <span class="panel-cap">relative message volume</span></h3>
+            <svg class="chart" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label="Demand peaks in the AM and PM rush">
+              <defs>
+                <linearGradient id="demandFill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="var(--amber)" stop-opacity="0.30" />
+                  <stop offset="100%" stop-color="var(--amber)" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <polygon points={toArea(demandC)} fill="url(#demandFill)" />
+              <polyline points={toLine(demandC)} fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+            </svg>
+            <div class="chart-axis">
+              <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:00</span>
+            </div>
+            <p class="chart-take">Two sharp peaks: <strong>07:00 AM</strong> and <strong>17:00 PM</strong>. Midday and overnight are quiet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- EXPERIENCE & GAPS -->
+    <section class="dash-section">
+      <div class="container-wide">
+        <div class="sec-head">
+          <span class="eyebrow">Experience &amp; information gaps</span>
+          <h2>How riders feel — and where they’re blind</h2>
+          <p class="sec-sub">An always-on satisfaction signal from message sentiment, plus the stations and times generating the most “is my train even coming?” — the clearest ROI for better communication.</p>
+        </div>
+        <div class="grid-3">
+          <div class="panel" data-animate>
+            <h3 class="panel-title">Sentiment by line</h3>
+            <div class="sent-list">
+              {sentimentByLine.map((s) => (
+                <div class="sent-row">
+                  <div class="sent-top"><span class="sent-line"><span class="sent-dot" style={`background: var(${s.colorVar})`}></span>{s.line}</span><span class="sent-pct mono">{s.pos}%</span></div>
+                  <span class="sent-bar">
+                    <span class="sent-pos" style={`width:${s.pos}%`}></span>
+                    <span class="sent-neu" style={`width:${s.neu}%`}></span>
+                    <span class="sent-neg" style={`width:${s.neg}%`}></span>
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div class="legend">
+              <span><i class="lg lg-pos"></i>Positive</span><span><i class="lg lg-neu"></i>Neutral</span><span><i class="lg lg-neg"></i>Negative</span>
+            </div>
+          </div>
+
+          <div class="panel" data-animate data-delay="1">
+            <h3 class="panel-title">Top passenger concerns</h3>
+            <div class="bars">
+              {topConcerns.map((c) => (
+                <div class="bar-row bar-row--sm">
+                  <span class="bar-label">{c.label}</span>
+                  <span class="bar-track"><span class="bar-fill bar-fill--amber" style={`width:${(c.pct / maxConcern) * 100}%`}></span></span>
+                  <span class="bar-val mono">{c.pct}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="panel panel--gap" data-animate data-delay="2">
+            <h3 class="panel-title">Information-gap hotspots</h3>
+            <p class="panel-cap panel-cap--block">Where riders feel left in the dark</p>
+            <ol class="gap-list">
+              {infoGaps.map((g, i) => (
+                <li class="gap-row">
+                  <span class="gap-rank mono">{i + 1}</span>
+                  <span class="gap-info"><strong>{g.station}</strong><span>{g.window}</span></span>
+                  <span class="gap-bar-wrap"><span class="gap-bar" style={`width:${(g.queries / maxGap) * 100}%`}></span><span class="gap-val mono">{g.queries.toLocaleString()}</span></span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- RELIABILITY -->
+    <section class="dash-section">
+      <div class="container-wide">
+        <div class="sec-head">
+          <span class="eyebrow">Operational reliability</span>
+          <h2>The recovery, in context</h2>
+          <p class="sec-sub">Passenger-side metrics aligned with PRASA’s own goals — so the conversation is about the same numbers.</p>
+        </div>
+        <div class="grid-rel">
+          <div class="panel" data-animate>
+            <h3 class="panel-title">Trains on time <span class="panel-cap">last 12 months · target 90%</span></h3>
+            <svg class="chart" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label="On-time performance trend holding near 90 percent">
+              <line x1={P} x2={W - P} y1={otpTargetY} y2={otpTargetY} stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="4 4" vector-effect="non-scaling-stroke" />
+              <polyline points={toLine(otpC)} fill="none" stroke="var(--line-green)" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+              {otpC.map(([x, y]) => <circle cx={x} cy={y} r="2.5" fill="var(--line-green)" />)}
+            </svg>
+            <div class="chart-axis">{monthLabels.map((m) => <span>{m}</span>)}</div>
+          </div>
+
+          <div class="rel-side">
+            <div class="panel rel-tile" data-animate data-delay="1">
+              <span class="rel-label">Cancellations</span>
+              <span class="rel-num mono">{cancellations.value}</span>
+              <span class="pill pill-ok">{cancellations.trend}</span>
+            </div>
+            <div class="panel rel-tile" data-animate data-delay="2">
+              <span class="rel-label">Trips vs 2019 baseline</span>
+              <span class="rel-num mono">{recoveryTrend[recoveryTrend.length - 1]}%</span>
+              <svg class="rel-spark" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="recFill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="var(--line-blue)" stop-opacity="0.3" />
+                    <stop offset="100%" stop-color="var(--line-blue)" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <polygon points={toArea(recoveryC)} fill="url(#recFill)" />
+                <polyline points={toLine(recoveryC)} fill="none" stroke="var(--line-blue)" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+              </svg>
+              <span class="rel-cap">Climbing back — huge headroom remains</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- COVERAGE -->
+    <section class="dash-section">
+      <div class="container-wide">
+        <div class="coverage">
+          {coverage.map((c, i) => (
+            <div class="cov-item" data-animate data-delay={i + 1}>
+              <span class="cov-val mono">{c.value}</span>
+              <span class="cov-label">{c.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- NETWORK EXPANSION TEASER -->
+    <section class="dash-section">
+      <div class="container-wide">
+        <div class="sec-head"><span class="eyebrow">Network expansion</span><h2>The same lens, beyond the trains</h2>
+          <p class="sec-sub">This dashboard is the train. System Sol is extending the same passenger-sourced intelligence across how South Africa moves and speaks.</p>
+        </div>
+        <div class="exp-grid">
+          {ecosystem.filter((p) => p.status !== 'Live').map((p, i) => (
+            <div class="exp-card" style={`--eco: var(${p.colorVar})`} data-animate data-delay={i + 1}>
+              <span class="exp-mark">{p.initial}</span>
+              <div><h3>{p.name} <span class="exp-status">{p.status}</span></h3><p>{p.tagline}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="dash-section dash-cta-section">
+      <div class="container-wide">
+        <div class="dash-cta">
+          <h2>This is intelligence a R20-billion recovery needs.</h2>
+          <p>For the price of a chatbot, PRASA and the City get a continuous, city-wide, passenger-sourced view of demand, sentiment and information gaps. Let’s talk about making it official — or about reaching this audience.</p>
+          <div class="dash-cta-actions">
+            <a href="/partner" class="btn btn-amber">Partner with us</a>
+            <a href="/advertise" class="btn btn-outline">Advertise to commuters</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .dash-hero {
+    padding: 104px 0 32px;
+    position: relative;
+    background: var(--gradient-hero);
+  }
+  .dash-hero h1 {
+    font-size: var(--fs-display);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 16px 0 16px;
+    max-width: 14ch;
+  }
+  .dash-hero h1 em { font-style: normal; color: var(--amber); }
+  .dash-lead { font-size: var(--fs-lead); color: var(--text-secondary); max-width: 640px; line-height: 1.6; }
+  .dash-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; font-style: italic; }
+  .dash-board { margin-top: 28px; max-width: 560px; }
+
+  .dash-section { padding: 44px 0; position: relative; overflow: hidden; }
+  .dash-cta-section { padding-bottom: 88px; }
+
+  .sec-head { margin-bottom: 24px; max-width: 760px; }
+  .sec-head .eyebrow { margin-bottom: 12px; }
+  .sec-head h2 { font-size: var(--fs-h2); font-weight: 700; }
+  .sec-sub { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; margin-top: 10px; }
+
+  .kpi-row { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 560px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .kpi-row { grid-template-columns: repeat(4, 1fr); } }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 880px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+  .grid-3 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 760px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1040px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel-title {
+    font-size: 0.95rem; font-weight: 700; color: var(--text-primary);
+    margin-bottom: 18px; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  }
+  .panel-cap { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); font-weight: 400; letter-spacing: 0.02em; }
+  .panel-cap--block { display: block; margin: -10px 0 14px; }
+
+  /* Bars */
+  .bars { display: flex; flex-direction: column; gap: 11px; }
+  .bar-row { display: grid; grid-template-columns: 1fr; gap: 4px; }
+  .bar-label { font-size: 0.82rem; color: var(--text-secondary); }
+  .bar-track { position: relative; height: 8px; background: rgba(255,255,255,0.05); border-radius: var(--radius-pill); grid-column: 1; }
+  .bar-fill { display: block; height: 100%; border-radius: var(--radius-pill); min-width: 4px; }
+  .bar-fill--amber { background: var(--amber); }
+  .bar-val { font-size: 0.78rem; color: var(--text-primary); }
+  /* place value inline to the right via a 2-col layout on wider rows */
+  .bar-row { grid-template-columns: 1fr auto; align-items: center; column-gap: 12px; }
+  .bar-label { grid-column: 1; grid-row: 1; }
+  .bar-track { grid-column: 1; grid-row: 2; }
+  .bar-val { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .bar-row--sm .bar-label { font-size: 0.85rem; }
+
+  /* Charts */
+  .chart { width: 100%; height: 150px; display: block; }
+  .chart-axis { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-muted); margin-top: 6px; }
+  .chart-take { font-size: 0.82rem; color: var(--text-secondary); margin-top: 12px; }
+  .chart-take strong { color: var(--amber); }
+
+  /* Sentiment */
+  .sent-list { display: flex; flex-direction: column; gap: 14px; }
+  .sent-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+  .sent-line { display: flex; align-items: center; gap: 7px; font-size: 0.85rem; color: var(--text-primary); }
+  .sent-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .sent-pct { font-size: 0.8rem; color: var(--status-ok); }
+  .sent-bar { display: flex; height: 9px; border-radius: var(--radius-pill); overflow: hidden; }
+  .sent-pos { background: var(--status-ok); }
+  .sent-neu { background: rgba(159,176,195,0.4); }
+  .sent-neg { background: var(--status-bad); }
+  .legend { display: flex; gap: 16px; margin-top: 16px; font-size: 0.72rem; color: var(--text-secondary); }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .lg { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .lg-pos { background: var(--status-ok); } .lg-neu { background: rgba(159,176,195,0.4); } .lg-neg { background: var(--status-bad); }
+
+  /* Info gaps */
+  .gap-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .gap-row { display: flex; align-items: center; gap: 12px; }
+  .gap-rank { width: 22px; height: 22px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--amber-subtle); color: var(--amber); border-radius: 6px; font-size: 0.72rem; font-weight: 700; }
+  .gap-info { display: flex; flex-direction: column; min-width: 92px; }
+  .gap-info strong { font-size: 0.85rem; color: var(--text-primary); }
+  .gap-info span { font-size: 0.68rem; color: var(--text-muted); }
+  .gap-bar-wrap { flex: 1; display: flex; align-items: center; gap: 8px; }
+  .gap-bar { height: 6px; background: linear-gradient(90deg, var(--line-red), var(--amber)); border-radius: var(--radius-pill); min-width: 6px; }
+  .gap-val { font-size: 0.72rem; color: var(--text-secondary); margin-left: auto; }
+
+  /* Reliability */
+  .grid-rel { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 880px) { .grid-rel { grid-template-columns: 1.5fr 1fr; } }
+  .rel-side { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 520px) and (max-width: 879px) { .rel-side { grid-template-columns: 1fr 1fr; } }
+  .rel-tile { display: flex; flex-direction: column; gap: 8px; }
+  .rel-label { font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); font-weight: 700; }
+  .rel-num { font-size: 2.2rem; font-weight: 700; color: var(--text-primary); line-height: 1; }
+  .rel-tile .pill { align-self: flex-start; }
+  .rel-spark { width: 100%; height: 48px; margin-top: 4px; }
+  .rel-cap { font-size: 0.74rem; color: var(--text-muted); }
+
+  /* Coverage */
+  .coverage { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (min-width: 720px) { .coverage { grid-template-columns: repeat(5, 1fr); } }
+  .cov-item {
+    background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius);
+    padding: 20px 14px; text-align: center;
+  }
+  .cov-val { display: block; font-size: 1.9rem; font-weight: 700; color: var(--amber); line-height: 1; }
+  .cov-label { display: block; font-size: 0.72rem; color: var(--text-secondary); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Expansion */
+  .exp-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 720px) { .exp-grid { grid-template-columns: repeat(3, 1fr); } }
+  .exp-card { display: flex; gap: 14px; align-items: center; background: var(--bg-card); border: 1px solid var(--border-subtle); border-left: 3px solid var(--eco); border-radius: var(--radius); padding: 18px; }
+  .exp-mark { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--eco); font-family: var(--font-display); font-weight: 800; }
+  .exp-card h3 { font-size: 1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .exp-status { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); background: rgba(159,176,195,0.12); padding: 3px 7px; border-radius: var(--radius-pill); }
+  .exp-card p { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+
+  /* CTA */
+  .dash-cta {
+    background: var(--bg-card); border: 1px solid var(--amber-border); border-radius: var(--radius-xl);
+    padding: 44px 32px; text-align: center; box-shadow: var(--shadow-glow); max-width: 760px; margin: 0 auto;
+  }
+  .dash-cta h2 { font-size: var(--fs-h2); font-weight: 700; margin-bottom: 14px; }
+  .dash-cta p { color: var(--text-secondary); font-size: 1.02rem; line-height: 1.65; max-width: 600px; margin: 0 auto 26px; }
+  .dash-cta-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+
+  @media (max-width: 600px) {
+    .dash-hero { padding-top: 92px; }
+    .dash-section { padding: 32px 0; }
+  }
+</style>

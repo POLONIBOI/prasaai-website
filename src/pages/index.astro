@@ -6,12 +6,16 @@ import FeatureCard from '../components/FeatureCard.astro';
 import BentoGrid from '../components/BentoGrid.astro';
 import StepCard from '../components/StepCard.astro';
 import WhatsAppMockup from '../components/WhatsAppMockup.astro';
-import HeroScene from '../components/HeroScene.astro';
+import DepartureBoard from '../components/DepartureBoard.astro';
+import KpiCard from '../components/KpiCard.astro';
+import ChatAdMockup from '../components/ChatAdMockup.astro';
 import { site } from '../data/site';
 import { features } from '../data/features';
 import { channels } from '../data/channels';
 import { testimonials } from '../data/testimonials';
 import { roadmap } from '../data/roadmap';
+import { ecosystem, ecosystemTagline } from '../data/ecosystem';
+import { kpis } from '../data/dashboard';
 
 const jsonLd = [
   {
@@ -48,33 +52,47 @@ const jsonLd = [
 
     <!-- HERO -->
     <section class="hero">
-      <!-- Floating particles -->
-      <div class="particle p1" aria-hidden="true"></div>
-      <div class="particle p2" aria-hidden="true"></div>
-      <div class="particle p3" aria-hidden="true"></div>
-      <div class="particle p4" aria-hidden="true"></div>
-      <div class="particle p5" aria-hidden="true"></div>
-      <div class="particle p6" aria-hidden="true"></div>
-
+      <div class="hero-glow" aria-hidden="true"></div>
       <div class="container">
         <div class="hero-layout">
           <div class="hero-text">
-            <div class="hero-lines">
-              <div class="hero-line" style="background: var(--line-red);"></div>
-              <div class="hero-line" style="background: var(--line-green);"></div>
-              <div class="hero-line" style="background: var(--line-orange);"></div>
-              <div class="hero-line" style="background: var(--line-blue);"></div>
-            </div>
-            <h1 data-animate data-delay="1">Your Cape Town train assistant. <em>On WhatsApp.</em></h1>
-            <p class="hero-sub" data-animate data-delay="2">Real-time schedules, delay alerts, and crowd reports — powered by AI, built by a commuter who gets it.</p>
-            <div data-animate data-delay="3">
+            <span class="eyebrow hero-eyebrow"><span class="live-dot" aria-hidden="true"></span> Live · Cape Town Metrorail</span>
+            <h1 data-animate data-delay="1">Will your train come? <em>Now you'll know.</em></h1>
+            <p class="hero-sub" data-animate data-delay="2">PRASA ai is your Cape Town Metrorail assistant on WhatsApp — real-time schedules, delay alerts and crowd reports. Free, no app, in your language.</p>
+            <div class="hero-actions" data-animate data-delay="3">
               <WhatsAppCTA variant="primary" />
+              <a href="/dashboard" class="btn btn-ghost hero-secondary">See the live network &rarr;</a>
             </div>
-            <p class="hero-note" data-animate data-delay="4">Free &middot; No app download &middot; Works on any phone</p>
-            <p class="hero-disclaimer" data-animate data-delay="5">Not an official PRASA service — yet.</p>
+            <ul class="hero-chips" data-animate data-delay="4">
+              <li>Free</li>
+              <li>No app download</li>
+              <li>Any phone</li>
+              <li>EN &middot; AF &middot; isiXhosa</li>
+            </ul>
+            <p class="hero-disclaimer" data-animate data-delay="5">Not an official PRASA service — <em>yet.</em></p>
           </div>
           <div class="hero-visual">
-            <HeroScene />
+            <DepartureBoard />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROMISE BAND -->
+    <section class="promise">
+      <div class="container">
+        <div class="promise-grid">
+          <div class="promise-item" data-animate data-delay="1">
+            <span class="promise-icon" aria-hidden="true">&#x23F1;&#xFE0F;</span>
+            <div class="promise-text"><strong>Real-time status &amp; alerts</strong><span>Know before you leave home.</span></div>
+          </div>
+          <div class="promise-item" data-animate data-delay="2">
+            <span class="promise-icon" aria-hidden="true">&#x1F465;</span>
+            <div class="promise-text"><strong>Crowd-sourced accuracy</strong><span>Live reports from riders like you.</span></div>
+          </div>
+          <div class="promise-item" data-animate data-delay="3">
+            <span class="promise-icon" aria-hidden="true">&#x1F4B0;</span>
+            <div class="promise-text"><strong>Fares &amp; cheapest route</strong><span>Save ~R800/month vs taxis.</span></div>
           </div>
         </div>
       </div>
@@ -231,6 +249,78 @@ const jsonLd = [
       </div>
     </section>
 
+    <!-- PUBLIC DASHBOARD TEASER -->
+    <div class="section-divider"></div>
+    <section class="section section-dataproof">
+      <div class="container">
+        <div class="teaser-head">
+          <span class="eyebrow">For PRASA &amp; the City</span>
+          <SectionHeading>The data behind the chat.</SectionHeading>
+          <p class="teaser-sub" data-animate>Every question is a signal. PRASA ai sees the network the way passengers <em>experience</em> it — demand, sentiment, and the exact stations where riders feel left in the dark. A live, passenger-sourced view no signalling system can give you.</p>
+        </div>
+        <div class="kpi-grid">
+          {kpis.map((k, i) => <KpiCard kpi={k} delay={i + 1} />)}
+        </div>
+        <div class="cta-center cta-spaced">
+          <a href="/dashboard" class="btn btn-outline">Open the public dashboard &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADVERTISE TEASER -->
+    <div class="section-divider"></div>
+    <section class="section section-adteaser">
+      <div class="container">
+        <div class="adteaser-layout">
+          <div class="adteaser-text">
+            <span class="eyebrow">For advertisers</span>
+            <SectionHeading>Reach commuters in the moment.</SectionHeading>
+            <p data-animate>Thousands of Cape Town commuters open PRASA ai the instant they plan a trip — a captive, daily, location- and time-specific audience inside WhatsApp. A single, labelled sponsored line rides along with their schedule reply. Around 100% viewable. Measurable. Brand-safe.</p>
+            <ul class="adteaser-stats" data-animate data-delay="1">
+              <li><strong class="mono">~98%</strong><span>open rate</span></li>
+              <li><strong class="mono">~100%</strong><span>viewability</span></li>
+              <li><strong class="mono">AM·PM</strong><span>peak targeting</span></li>
+            </ul>
+            <a href="/advertise" class="btn btn-outline">See ad formats &rarr;</a>
+          </div>
+          <div class="adteaser-demo">
+            <ChatAdMockup
+              bot={['🚆 Northern Line — Bellville → Cape Town', '✅ On time · Next 07:42 · Platform 2']}
+              adTitle="☕ Vida e Caffè @ Cape Town Station"
+              adBody="R10 off your morning coffee — show this chat."
+              adCta="Get offer"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM SOL ECOSYSTEM -->
+    <div class="section-divider"></div>
+    <section class="section section-ecosystem">
+      <div class="container">
+        <div class="teaser-head centered-head">
+          <span class="eyebrow">What System Sol is building next</span>
+          <SectionHeading centered>One assistant today. A platform tomorrow.</SectionHeading>
+          <p class="teaser-sub teaser-sub-centered" data-animate>{ecosystemTagline}</p>
+        </div>
+        <div class="eco-grid">
+          {ecosystem.map((p, i) => (
+            <div class:list={['eco-card', p.status === 'Live' && 'eco-live']} style={`--eco: var(${p.colorVar})`} data-animate data-delay={i + 1}>
+              <div class="eco-top">
+                <span class="eco-mark">{p.initial}</span>
+                <span class:list={['eco-status', `eco-status-${p.status === 'Live' ? 'live' : p.status === 'In build' ? 'build' : 'soon'}`]}>{p.status}</span>
+              </div>
+              <h3>{p.name}</h3>
+              <p class="eco-tagline">{p.tagline}</p>
+              <p class="eco-desc">{p.description}</p>
+            </div>
+          ))}
+        </div>
+        <p class="eco-disclaimer" data-animate>GABS ai, YourGov and Fleet ai are in development by System Sol. PRASA ai is independent and not affiliated with PRASA or Golden Arrow.</p>
+      </div>
+    </section>
+
     <!-- ROADMAP -->
     <div class="section-divider"></div>
     <section class="section section-roadmap">
@@ -269,38 +359,40 @@ const jsonLd = [
 </BaseLayout>
 
 <style>
-  /* HERO */
+  /* ============ HERO ============ */
   .hero {
     position: relative;
-    padding: 100px 0 60px;
-    background: var(--gradient-hero);
-    text-align: center;
+    padding: 92px 0 48px;
     overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: -20% 0 auto 0;
+    height: 600px;
+    background: var(--gradient-hero);
+    pointer-events: none;
   }
 
   .hero-layout {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 36px;
+    position: relative;
   }
 
-  .hero-lines {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 32px;
+  .hero-eyebrow {
+    margin-bottom: 18px;
+    color: var(--text-secondary);
   }
-
-  .hero-line {
-    height: 4px;
-    border-radius: 2px;
-  }
+  .hero-eyebrow::before { display: none; }
 
   .hero h1 {
-    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-size: var(--fs-display);
     font-weight: 800;
-    margin-bottom: 20px;
-    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
   }
 
   .hero h1 em {
@@ -320,79 +412,86 @@ const jsonLd = [
   }
 
   .hero-sub {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-size: var(--fs-lead);
     color: var(--text-secondary);
-    max-width: 560px;
-    margin: 0 auto 36px;
+    max-width: 540px;
+    margin-bottom: 28px;
     line-height: 1.5;
   }
 
-  .hero-note {
-    margin-top: 20px;
-    font-size: 0.9rem;
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .hero-secondary { padding: 13px 22px; }
+
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    list-style: none;
+    margin-bottom: 16px;
+  }
+
+  .hero-chips li {
+    font-size: 0.78rem;
+    font-weight: 600;
     color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
   }
 
   .hero-disclaimer {
-    margin-top: 12px;
     font-size: 0.85rem;
-    color: var(--text-secondary);
-    opacity: 0.7;
+    color: var(--text-muted);
     font-style: italic;
   }
+  .hero-disclaimer em { color: var(--amber); font-style: italic; }
 
-  /* Hero visual — visible on mobile too */
-  .hero-visual {
-    max-width: 220px;
-    margin: 24px auto 0;
-    opacity: 0.6;
-  }
+  .hero-visual { width: 100%; }
 
-  /* Floating particles */
-  .particle {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
-  .p1 { width: 4px; height: 4px; background: var(--amber); top: 15%; left: 10%; animation: float-particle-1 10s ease-in-out infinite; }
-  .p2 { width: 3px; height: 3px; background: var(--line-red); top: 25%; right: 15%; animation: float-particle-2 12s ease-in-out infinite; }
-  .p3 { width: 5px; height: 5px; background: var(--amber); bottom: 30%; left: 20%; animation: float-particle-3 8s ease-in-out infinite; }
-  .p4 { width: 3px; height: 3px; background: var(--line-blue); top: 40%; right: 25%; animation: float-particle-4 14s ease-in-out infinite; }
-  .p5 { width: 6px; height: 6px; background: var(--amber); bottom: 20%; right: 10%; animation: float-particle-5 16s ease-in-out infinite; }
-  .p6 { width: 4px; height: 4px; background: var(--line-green); top: 60%; left: 8%; animation: float-particle-6 11s ease-in-out infinite; }
-
-  @media (min-width: 1024px) {
-    .hero {
-      padding: 140px 0 100px;
-      text-align: left;
-    }
-
+  @media (min-width: 920px) {
+    .hero { padding: 132px 0 80px; }
     .hero-layout {
       flex-direction: row;
       align-items: center;
-      gap: 60px;
+      gap: 56px;
     }
+    .hero-text { flex: 1 1 0; min-width: 0; }
+    .hero-visual { flex: 0 0 420px; max-width: 420px; }
+  }
 
-    .hero-text {
-      flex: 1;
-    }
+  /* ============ PROMISE BAND ============ */
+  .promise { padding: 8px 0; }
+  .promise-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .promise-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .promise-item:hover { border-color: var(--amber-border); transform: translateY(-2px); }
+  .promise-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .promise-text { display: flex; flex-direction: column; }
+  .promise-text strong { font-family: var(--font-display); font-size: 0.95rem; color: var(--text-primary); }
+  .promise-text span { font-size: 0.82rem; color: var(--text-secondary); }
 
-    .hero-visual {
-      display: block;
-      flex: 0 0 400px;
-      max-width: 400px;
-      opacity: 1;
-      margin: 0;
-    }
-
-    .hero-lines {
-      justify-content: flex-start;
-    }
-
-    .hero-sub {
-      margin-left: 0;
-    }
+  @media (min-width: 720px) {
+    .promise-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
   /* SECTIONS */
@@ -856,6 +955,156 @@ const jsonLd = [
   @media (min-width: 768px) {
     .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
   }
+
+  /* ============ TEASER HEADS ============ */
+  .teaser-head { max-width: 720px; }
+  .teaser-head.centered-head { margin-left: auto; margin-right: auto; text-align: center; }
+  .teaser-head .eyebrow { margin-bottom: 14px; }
+  .teaser-sub {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-top: -8px;
+  }
+  .teaser-sub em { color: var(--text-primary); font-style: italic; }
+  .teaser-sub-centered { max-width: 640px; margin-left: auto; margin-right: auto; }
+
+  /* ============ DASHBOARD TEASER ============ */
+  .section-dataproof::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 100% 0%, rgba(94,155,255,0.04), transparent 55%);
+    pointer-events: none;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 32px 0;
+  }
+  @media (min-width: 560px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .kpi-grid { grid-template-columns: repeat(4, 1fr); } }
+  .cta-spaced { margin-top: 12px; }
+
+  /* ============ ADVERTISE TEASER ============ */
+  .section-adteaser::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 0% 50%, rgba(255,154,48,0.04), transparent 55%);
+    pointer-events: none;
+  }
+  .adteaser-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  .adteaser-text .eyebrow { margin-bottom: 14px; }
+  .adteaser-text > p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 22px;
+  }
+  .adteaser-stats {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    margin-bottom: 26px;
+  }
+  .adteaser-stats li { display: flex; flex-direction: column; }
+  .adteaser-stats strong { font-size: 1.3rem; color: var(--amber); }
+  .adteaser-stats span { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .adteaser-demo { display: flex; justify-content: center; }
+  .mini-chat {
+    width: 100%;
+    max-width: 360px;
+    background: var(--wa-dark);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow-2);
+  }
+  .mini-bot, .mini-ad {
+    background: var(--wa-bubble-bot);
+    border-radius: 10px;
+    border-bottom-left-radius: 2px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-self: flex-start;
+    max-width: 94%;
+  }
+  .mini-ad {
+    border: 1px dashed var(--amber-border);
+    background: rgba(255,192,64,0.06);
+  }
+  .mini-ad-label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--amber);
+    letter-spacing: 0.06em;
+  }
+  .mini-ad-cta { color: var(--wa-green); font-weight: 600; }
+
+  @media (min-width: 860px) {
+    .adteaser-layout { grid-template-columns: 1.15fr 0.85fr; gap: 48px; }
+  }
+
+  /* ============ ECOSYSTEM ============ */
+  .section-ecosystem::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,192,64,0.04), transparent 55%);
+    pointer-events: none;
+  }
+  .eco-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 36px 0 24px;
+  }
+  .eco-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    border-top: 3px solid var(--eco);
+    padding: 22px;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+  .eco-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-2); }
+  .eco-live { box-shadow: 0 0 0 1px var(--amber-border), var(--shadow-glow); }
+  .eco-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .eco-mark {
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    background: color-mix(in srgb, var(--eco) 18%, transparent);
+    color: var(--eco);
+    font-family: var(--font-display);
+    font-weight: 800;
+  }
+  .eco-status {
+    font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 4px 9px; border-radius: var(--radius-pill);
+  }
+  .eco-status-live { background: rgba(56,181,74,0.15); color: var(--status-ok); }
+  .eco-status-build { background: rgba(255,192,64,0.15); color: var(--amber); }
+  .eco-status-soon { background: rgba(159,176,195,0.12); color: var(--text-secondary); }
+  .eco-card h3 { font-size: 1.15rem; margin-bottom: 2px; }
+  .eco-tagline { font-size: 0.82rem; color: var(--eco); font-weight: 600; margin-bottom: 10px; }
+  .eco-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; }
+  .eco-disclaimer { font-size: 0.78rem; color: var(--text-muted); text-align: center; max-width: 620px; margin: 0 auto; font-style: italic; }
+
+  @media (min-width: 600px) { .eco-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 980px) { .eco-grid { grid-template-columns: repeat(4, 1fr); } }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,88 @@
+---
+import Sparkline from './Sparkline.astro';
+import type { Kpi } from '../data/dashboard';
+
+interface Props {
+  kpi: Kpi;
+  delay?: number;
+}
+const { kpi, delay = 0 } = Astro.props;
+const trendClass = kpi.trendDir === 'flat' ? 'kpi-trend--flat' : kpi.trendGood ? 'kpi-trend--good' : 'kpi-trend--bad';
+const sparkColor = kpi.trendDir === 'flat' ? '--line-blue' : kpi.trendGood ? '--line-green' : '--line-red';
+---
+
+<div class="kpi" data-animate data-delay={delay}>
+  <div class="kpi-head">
+    <span class="kpi-label">{kpi.label}</span>
+    <span class:list={['kpi-trend', trendClass]}>{kpi.trend}</span>
+  </div>
+  <div class="kpi-value mono">{kpi.value}</div>
+  <div class="kpi-unit">{kpi.unit}</div>
+  <div class="kpi-spark"><Sparkline values={kpi.spark} colorVar={sparkColor} /></div>
+  <div class="kpi-caption">{kpi.caption}</div>
+</div>
+
+<style>
+  .kpi {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .kpi:hover { border-color: var(--amber-border); transform: translateY(-3px); }
+
+  .kpi-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .kpi-label {
+    font-size: var(--fs-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+  }
+
+  .kpi-trend {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+  .kpi-trend--good { background: rgba(56,181,74,0.15); color: var(--status-ok); }
+  .kpi-trend--bad  { background: rgba(255,68,68,0.15); color: var(--status-bad); }
+  .kpi-trend--flat { background: rgba(94,155,255,0.15); color: var(--status-info); }
+
+  .kpi-value {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+
+  .kpi-unit {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+
+  .kpi-spark {
+    margin: 10px 0 8px;
+    height: 30px;
+  }
+
+  .kpi-caption {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+</style>

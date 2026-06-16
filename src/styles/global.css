@@ -5,48 +5,91 @@
 }
 
 :root {
-  /* Brand */
+  /* ============ Brand — Signal Amber ============ */
   --amber: #FFC040;
   --amber-hover: #FFB020;
   --amber-glow: rgba(255, 192, 64, 0.4);
   --amber-subtle: rgba(255, 192, 64, 0.12);
   --amber-border: rgba(255, 192, 64, 0.28);
 
-  /* Backgrounds */
-  --bg-primary: #111820;
-  --bg-card: #1D2B3A;
-  --bg-card-hover: #243448;
-  --bg-elevated: #2A3A50;
-  --bg-nav: rgba(17, 24, 32, 0.92);
+  /* ============ Surfaces / ink ============ */
+  --bg-primary: #141D28;
+  --bg-card: #202C3A;
+  --bg-card-hover: #283648;
+  --bg-elevated: #324356;
+  --bg-nav: rgba(20, 29, 40, 0.88);
 
-  /* Text */
-  --text-primary: #F0F4F8;
-  --text-secondary: #97AAC0;
-  --text-muted: rgba(151, 170, 192, 0.6);
+  /* ============ Text ============ */
+  --text-primary: #F2F6FA;
+  --text-secondary: #9FB0C3;
+  --text-muted: rgba(159, 176, 195, 0.6);
 
-  /* Borders */
-  --border-subtle: rgba(151, 170, 192, 0.14);
+  /* ============ Borders ============ */
+  --border-subtle: rgba(159, 176, 195, 0.14);
   --border-amber: rgba(255, 192, 64, 0.3);
 
-  /* Metrorail Lines */
+  /* ============ Metrorail line colours ============ */
   --line-red: #FF4444;
   --line-green: #38B54A;
   --line-orange: #FF9A30;
   --line-blue: #5E9BFF;
 
-  /* WhatsApp */
+  /* ============ Semantic status (always pair w/ label) ============ */
+  --status-ok: #38B54A;
+  --status-warn: #FFC040;
+  --status-bad: #FF4444;
+  --status-info: #5E9BFF;
+
+  /* ============ WhatsApp ============ */
   --wa-green: #25D366;
   --wa-dark: #0B141A;
   --wa-bubble-user: #005C4B;
   --wa-bubble-bot: #1F2C34;
 
-  /* Gradients */
+  /* ============ Typography ============ */
+  --font-display: 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Roboto Mono', Menlo, Consolas, monospace;
+
+  --fs-display: clamp(2.25rem, 6vw, 4rem);
+  --fs-h2: clamp(1.6rem, 4vw, 2.5rem);
+  --fs-h3: clamp(1.1rem, 2.5vw, 1.35rem);
+  --fs-lead: clamp(1.05rem, 2.2vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-micro: 0.75rem;
+
+  /* ============ Spacing (4px base) ============ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* ============ Radius ============ */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* ============ Gradients ============ */
   --gradient-hero: radial-gradient(ellipse at 50% 0%, rgba(255,192,64,0.12) 0%, transparent 70%);
   --gradient-card-glow: radial-gradient(circle at 50% 0%, rgba(255,192,64,0.06) 0%, transparent 60%);
 
-  /* Shadows */
+  /* ============ Shadows / elevation ============ */
+  --shadow-1: 0 2px 12px rgba(0, 0, 0, 0.25);
+  --shadow-2: 0 12px 40px rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 0 60px rgba(255, 192, 64, 0.10);
   --shadow-cta: 0 6px 32px rgba(255, 192, 64, 0.4);
   --shadow-cta-hover: 0 8px 40px rgba(255, 192, 64, 0.5);
+
+  /* ============ Motion ============ */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 html {
@@ -54,8 +97,12 @@ html {
 }
 
 body {
-  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   background: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse 90% 50% at 50% -10%, rgba(255, 192, 64, 0.06), transparent 60%),
+    radial-gradient(ellipse 70% 40% at 90% 10%, rgba(94, 155, 255, 0.04), transparent 55%);
+  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -63,8 +110,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif;
-  line-height: 1.2;
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 a {
@@ -82,18 +130,56 @@ img, svg {
   max-width: 100%;
 }
 
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
+.container-wide {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
 @media (min-width: 640px) {
-  .container { padding: 0 24px; }
+  .container, .container-wide { padding: 0 24px; }
 }
 
 @media (min-width: 1200px) {
-  .container { padding: 0 32px; }
+  .container, .container-wide { padding: 0 32px; }
+}
+
+/* ============ Utilities ============ */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 18px;
+  height: 2px;
+  background: var(--amber);
+  border-radius: 2px;
 }
 
 /* Gradient section divider — metrorail line colors */
@@ -101,6 +187,96 @@ img, svg {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--line-red), var(--line-green), var(--line-orange), var(--line-blue), transparent);
   opacity: 0.3;
+}
+
+/* ============ Buttons (global primitives) ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn:hover { transform: translateY(-2px); }
+
+.btn-amber {
+  background: var(--amber);
+  color: #0E141C;
+  box-shadow: var(--shadow-cta);
+}
+.btn-amber:hover { background: var(--amber-hover); color: #0E141C; box-shadow: var(--shadow-cta-hover); }
+
+.btn-wa {
+  background: var(--wa-green);
+  color: #fff;
+}
+.btn-wa:hover { color: #fff; box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4); }
+
+.btn-outline {
+  border-color: var(--amber);
+  color: var(--amber);
+  background: transparent;
+}
+.btn-outline:hover { background: var(--amber); color: #0E141C; }
+
+.btn-ghost {
+  border-color: var(--border-subtle);
+  color: var(--text-secondary);
+  background: transparent;
+  font-weight: 600;
+}
+.btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ============ Status pills ============ */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+.pill-ok   { background: rgba(56,181,74,0.15);  color: var(--status-ok); }
+.pill-warn { background: rgba(255,192,64,0.15); color: var(--status-warn); }
+.pill-bad  { background: rgba(255,68,68,0.15);  color: var(--status-bad); }
+.pill-info { background: rgba(94,155,255,0.15); color: var(--status-info); }
+
+/* Live dot */
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-ok);
+  box-shadow: 0 0 0 0 rgba(56, 181, 74, 0.5);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .live-dot { animation: live-pulse 2s ease-out infinite; }
+  @keyframes live-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(56, 181, 74, 0.5); }
+    70%  { box-shadow: 0 0 0 8px rgba(56, 181, 74, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(56, 181, 74, 0); }
+  }
+}
+
+/* ============ Panels / cards ============ */
+.panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
 }
 
 /* Touch targets — ensure 44px minimum on mobile */
