@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "astro": "^5.7.10"
